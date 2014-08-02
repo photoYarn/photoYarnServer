@@ -16,6 +16,16 @@ exports.createYarn = function(req, res) {
         caption: req.body.caption,
         creatorId: req.body.creatorId,
         photoUrls: [req.body.photo]
+    }).save(function(err, product, numAffected) {
+        console.log('err', err);
+        console.log('product', product);
+        console.log('num', numAffected);
+    });
+};
+
+exports.getYarns = function(req, res) {
+    Yarn.find().exec(function(err, yarns) {
+        console.log(yarns);
     });
 };
 
