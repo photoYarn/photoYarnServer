@@ -16,6 +16,12 @@ app.get('/yarns', function(req, res) {
 });
 
 app.post('/yarns', function(req, res) {
+    var params = {
+        caption: req.body.caption,
+        creatorId: req.body.creatorId,
+        photoUrl: req.body.photoUrl
+    }
+    api.createYarn(params);
 });
 
 app.post('photo', function(req, res) {

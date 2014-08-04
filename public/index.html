@@ -12,7 +12,9 @@
             type: 'POST',
             url: 'http://photoyarn.azurewebsites.net/yarns',
             data: {
-                photoUrl: 'http://cdn.theanimals.pics/pictures/puppypicsonline.com/wp-content/uploads/2012/12/Christmas-Puppy-puppies-15897189-1280-800.jpg'
+                photoUrl: 'http://cdn.theanimals.pics/pictures/puppypicsonline.com/wp-content/uploads/2012/12/Christmas-Puppy-puppies-15897189-1280-800.jpg',
+                caption: 'i like puppies',
+                creatorId: 0
             },
             success: function(data, status) {
                 console.log('data', data);
