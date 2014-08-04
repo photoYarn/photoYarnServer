@@ -8,7 +8,7 @@ var app = express();
 mongoose.connect('mongodb://MongoLab-1:8fslrNoqQA8bTtE9toqkplr32HsoWQO1fohSpbc1KbA-@ds050077.mongolab.com:50077/MongoLab-1');
 
 app.get('/', function(req, res) {
-    res.sendfile(__dirname + 'public/index.html');
+    res.sendfile(__dirname + '/public/index.html');
 });
 
 app.get('/yarns', function(req, res) {
