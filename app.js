@@ -1,34 +1,14 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var app = express();
-var http = require('http').Server(app);
 var api = require('./db/api.js');
 
+var app = express();
 // connect to Mongo when the app initializes
 mongoose.connect('mongodb://localhost/photoYarn');
- 
-// app.post('/addPhoto', function(req, res) {
-//     api.addPhoto();
-// });
 
-// app.post('/createYarn', function(req, res) {
-//     api.createYarn();
-// }});
+app.use(express.static(__dirname + '/public'));
 
-// app.get('/yarn', function(req, res) {
-
-// })
-var req = {
-    body: {
-        caption: 'hello everybody',
-        creatorId: 1,
-        photo: "http://upload.wikimedia.org/wikipedia/commons/b/bf/Lano_Beach_-_Savai'i,_2007.jpg"
-    }
-}
- api.createYarn(req);
+module.exports = app;
 
 
-http.listen(3000, function(){
-    console.log('listening on 3000');
-});
 

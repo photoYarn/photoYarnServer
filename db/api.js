@@ -2,36 +2,68 @@ var Yarn = require('./models/yarn.js');
 var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 
-exports.addPhoto = function(req, res) {
-    Yarn.findOne({_id: req.yarnId}, function(err, yarn) {
-        yarn.photoUrls.push(req.photoUrl);
-
-        // instantiate photo model instance
-        exports.createPhoto();
-    });
-};
-
-exports.createYarn = function(req, res) {
+exports.createYarn = function(params) {
     new Yarn({
-        caption: req.body.caption,
-        creatorId: req.body.creatorId,
-        photoUrls: [req.body.photo]
-    }).save(function(err, product, numAffected) {
+        caption: params.caption,
+        creatorId: params.creatorId,
+        photoUrls: [params.photoUrl]
+    }).save(function(err, yarn, numAffected) {
         console.log('err', err);
-        console.log('product', product);
+        console.log('yarn', yarn);
         console.log('num', numAffected);
     });
+
+    exports.createPhoto({photoUrl: params.photoUrl})
 };
 
-exports.getYarns = function(req, res) {
-    Yarn.find().exec(function(err, yarns) {
-        console.log(yarns);
+exports.addPhoto = function(params) {
+    Yarn.findOne({_id: params.yarnId}, function(err, yarn) {
+        yarn.photoUrls.push(params.photoUrl);
+        console.log('yarn', yarn);
+        yarn.save(function(err, yarn, num) {
+            console.log('err', err);
+            console.log('how many photos', yarn.photoUrls.length);
+            console.log('num', num);
+        });
+
+        // instantiate photo model instance
+        exports.createPhoto({ photoUrl: params.photoUrl});
     });
 };
 
-exports.createPhoto = function(req, res) {
+
+exports.getAllYarns = function(res) {
+    Yarn.find().exec(function(err, yarns) {
+        res.send(yarns);
+        console.log(yarns)
+    });
+};
+
+exports.createPhoto = function(params) {
     new Photo({
-        url: req.photoUrl
+        url: params.photoUrl
+    }).save(function(err, photo, num) {
+        console.log('err', err);
+        console.log('photo', photo);
+        console.log('num', num);
+    });
+};
+
+exports.getAllPhotos = function() {
+    Photo.find().exec(function(err, photos) {
+        console.log(photos);
+    });
+};
+
+exports.removeAllPhotos = function() {
+    Photo.remove({}, function(err) {
+        console.log(err);
+    });
+};
+
+exports.removeAllYarns = function() {
+    Yarn.remove({}, function(err) {
+        console.log(err);
     });
 };
 
