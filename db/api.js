@@ -34,8 +34,8 @@ exports.addPhoto = function(params) {
 
 exports.getAllYarns = function(res) {
     Yarn.find().exec(function(err, yarns) {
-        res.send(yarns);
-        console.log(yarns)
+        res.send(JSON.stringify(yarns));
+        // console.log(yarns)
     });
 };
 
