@@ -1,0 +1,29 @@
+{
+  "name": "photoYarnServer",
+  "version": "0.0.0",
+  "description": "photo yarn server",
+  "main": "db.js",
+  "dependencies": {
+    "body-parser": "^1.5.2",
+    "express": "^4.7.2",
+    "http": "0.0.0",
+    "mongoose": "^3.8.14",
+    "mongoose-auto-increment": "^3.0.8",
+    "morgan": "^1.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/paulyi326/photoYarnServer"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulyi326/photoYarnServer/issues"
+  },
+  "homepage": "https://github.com/paulyi326/photoYarnServer"
+}
