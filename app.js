@@ -29,7 +29,7 @@ app.get('/yarns', function(req, res) {
         // yarns is an array of yarn objects
         // each yarn object should have an array
         // of imgur photo id's
-        res.send(yarns)
+        res.send(yarns);
     });
 
 });
