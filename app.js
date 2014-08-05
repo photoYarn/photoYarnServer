@@ -8,6 +8,10 @@ var api = require('./db/api.js');
 var bodyParser = require('body-parser');
 
 var app = express();
+
+// takes data the client sends to server
+// and sets them as keys on the body property
+// on the request
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -15,15 +19,25 @@ app.use(bodyParser.urlencoded({
 // api.removeAllYarns();
 // api.removeAllPhotos();
 
-// connect to Mongo when the app initializes
-// mongoose.connect('mongodb://localhost/photoYarn');
-mongoose.connect('mongodb://MongoLab-1:8fslrNoqQA8bTtE9toqkplr32HsoWQO1fohSpbc1KbA-@ds050077.mongolab.com:50077/MongoLab-1');
+var mongoLabUrl;
+
+// if running locally
+if (!process.env.mongoLab) {
+    mongoLabUrl = 'mongodb://localhost/photoYarn';
+} else {
+    // not running locally
+    mongoLabUrl = process.env.mongoLab;
+}
+
+// connect to mongodb
+mongoose.connect(mongoLabUrl);
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
-// client will 
+// client will call as soon as app loads to
+// load up a view of all the yarns
 app.get('/yarns', function(req, res) {
 
     api.getAllYarns().exec(function(err, yarns) {
@@ -35,6 +49,7 @@ app.get('/yarns', function(req, res) {
 
 });
 
+// called when creating a new yarn
 app.post('/yarns', function(req, res) {
     console.log('req body', req.body);
 
@@ -45,11 +60,15 @@ app.post('/yarns', function(req, res) {
     };
 
     api.createYarn(params).save(function(err, yarn, numAffected) {
-        res.send(200, 'Kia Optimaaaa Fathiiii');
+        // res.send(200, 'Kia Optimaaaa Fathiiii');
+        res.send(200, yarn);
+
     });
 });
 
-app.post('photo', function(req, res) {
+// client will call this, providing a yarn id
+// in order to add a photo to a specific yarn
+app.post('/photo', function(req, res) {
     console.log('post to photo')
 });
 

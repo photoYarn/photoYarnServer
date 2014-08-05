@@ -10,15 +10,11 @@ exports.createYarn = function(params) {
         creatorId: params.creatorId,
         imgurIds: [params.imgurId]
     });
-    // .save(function(err, yarn, numAffected) {
-    //     // console.log('err', err);
-    //     // console.log('yarn', yarn);
-    //     // console.log('num', numAffected);
-    // });
 
 };
 
 exports.addPhoto = function(params) {
+    
     Yarn.findOne({_id: params.yarnId}, function(err, yarn) {
         yarn.imgurIds.push(params.imgurId);
         console.log('yarn', yarn);
