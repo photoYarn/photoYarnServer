@@ -7,10 +7,11 @@ exports.createYarn = function(params) {
         caption: params.caption,
         creatorId: params.creatorId,
         photoUrls: [params.photoUrl]
-    }).save(function(err, yarn, numAffected) {
-        console.log('err', err);
-        console.log('yarn', yarn);
-        console.log('num', numAffected);
+    })
+    .save(function(err, yarn, numAffected) {
+        // console.log('err', err);
+        // console.log('yarn', yarn);
+        // console.log('num', numAffected);
     });
 
     exports.createPhoto({photoUrl: params.photoUrl})
@@ -33,19 +34,17 @@ exports.addPhoto = function(params) {
 
 
 exports.getAllYarns = function(res) {
-    Yarn.find().exec(function(err, yarns) {
-        res.send(yarns);
-        console.log(yarns)
-    });
+    return Yarn.find();
 };
 
 exports.createPhoto = function(params) {
     new Photo({
         url: params.photoUrl
-    }).save(function(err, photo, num) {
-        console.log('err', err);
-        console.log('photo', photo);
-        console.log('num', num);
+    })
+    .save(function(err, photo, num) {
+        // console.log('err', err);
+        // console.log('photo', photo);
+        // console.log('num', num);
     });
 };
 
