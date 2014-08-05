@@ -1,12 +1,18 @@
+'use strict';
 
+var request = require('supertest');
+var expect = require('chai').expect;
+var app = require('../app.js');
 
-
-describe('Server', function() {
-    it('should do something for unrecognized routes', function() {
+describe('GET', function() {
+    it('should reject unrecognized routes', function(done) {
+        request(app)
+            .get('/boogers')
+            .expect(404, done)
     });
-});
+})
 
-describe('Feed', function() {
+xdescribe('Feed', function() {
     it('should retrieve all threads', function() {
     });
 
@@ -20,7 +26,7 @@ describe('Feed', function() {
     });
 });
 
-describe('Thread', function() {
+xdescribe('Thread', function() {
     it('should create a new thread', function() {
     });
 
@@ -31,7 +37,7 @@ describe('Thread', function() {
     });
 });
 
-describe('Photo', function() {
+xdescribe('Photo', function() {
     it('should create a photo', function() {
     });
 
@@ -61,7 +67,7 @@ describe('Photo', function() {
     });
 });
 
-describe('User', function() {
+xdescribe('User', function() {
     it('should create a new user', function() {
     });
 
@@ -76,7 +82,7 @@ describe('User', function() {
 });
 
 
-describe('Authentication', function() {
+xdescribe('Authentication', function() {
     it('should accept good credentials', function() {
     });
 
