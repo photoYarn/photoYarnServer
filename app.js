@@ -44,7 +44,9 @@ app.post('/yarns', function(req, res) {
         imgurId: req.body.imgurId
     };
 
-    api.createYarn(params);
+    api.createYarn(params).save(function(err, yarn, numAffected) {
+        res.send(200, 'Kia Optimaaaa Fathiiii');
+    });
 });
 
 app.post('photo', function(req, res) {

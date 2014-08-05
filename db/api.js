@@ -3,18 +3,19 @@ var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 
 exports.createYarn = function(params) {
-    new Yarn({
+    exports.createPhoto({imgurId: params.imgurId})
+
+    return new Yarn({
         caption: params.caption,
         creatorId: params.creatorId,
         imgurIds: [params.imgurId]
-    })
-    .save(function(err, yarn, numAffected) {
-        // console.log('err', err);
-        // console.log('yarn', yarn);
-        // console.log('num', numAffected);
     });
+    // .save(function(err, yarn, numAffected) {
+    //     // console.log('err', err);
+    //     // console.log('yarn', yarn);
+    //     // console.log('num', numAffected);
+    // });
 
-    exports.createPhoto({imgurId: params.imgurId})
 };
 
 exports.addPhoto = function(params) {
