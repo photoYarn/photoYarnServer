@@ -6,6 +6,7 @@ var api = require('./db/api.js');
 // use bodyParser.urlencoded() or
 // use bodyParser.json() as needed
 var bodyParser = require('body-parser');
+var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
 
 var app = express();
 
@@ -19,17 +20,11 @@ app.use(bodyParser.urlencoded({
 // api.removeAllYarns();
 // api.removeAllPhotos();
 
-var mongoLabUrl;
-console.log('======================================================')
-console.log(process.env.mongoLab);
 
-// if running locally
-if (!process.env.mongoLab) {
-    mongoLabUrl = 'mongodb://localhost/photoYarn';
-} else {
-    // not running locally
-    mongoLabUrl = process.env.mongoLab;
-}
+console.log('======================================================')
+console.log(mongoLabUrl);
+
+
 
 // connect to mongodb
 mongoose.connect(mongoLabUrl);
