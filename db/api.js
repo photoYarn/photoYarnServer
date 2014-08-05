@@ -6,7 +6,7 @@ exports.createYarn = function(params) {
     new Yarn({
         caption: params.caption,
         creatorId: params.creatorId,
-        photoUrls: [params.photoUrl]
+        imgurIds: [params.imgurId]
     })
     .save(function(err, yarn, numAffected) {
         // console.log('err', err);
@@ -14,21 +14,21 @@ exports.createYarn = function(params) {
         // console.log('num', numAffected);
     });
 
-    exports.createPhoto({photoUrl: params.photoUrl})
+    exports.createPhoto({imgurId: params.imgurId})
 };
 
 exports.addPhoto = function(params) {
     Yarn.findOne({_id: params.yarnId}, function(err, yarn) {
-        yarn.photoUrls.push(params.photoUrl);
+        yarn.imgurIds.push(params.imgurId);
         console.log('yarn', yarn);
         yarn.save(function(err, yarn, num) {
             console.log('err', err);
-            console.log('how many photos', yarn.photoUrls.length);
+            console.log('how many photos', yarn.imgurIds.length);
             console.log('num', num);
         });
 
         // instantiate photo model instance
-        exports.createPhoto({ photoUrl: params.photoUrl});
+        exports.createPhoto({ imgurId: params.imgurId});
     });
 };
 
@@ -39,7 +39,7 @@ exports.getAllYarns = function(res) {
 
 exports.createPhoto = function(params) {
     new Photo({
-        url: params.photoUrl
+        url: params.imgurId
     })
     .save(function(err, photo, num) {
         // console.log('err', err);

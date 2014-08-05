@@ -16,13 +16,14 @@ app.use(bodyParser.urlencoded({
 // api.removeAllPhotos();
 
 // connect to Mongo when the app initializes
-mongoose.connect('mongodb://localhost/photoYarn');
-// mongoose.connect('mongodb://MongoLab-1:8fslrNoqQA8bTtE9toqkplr32HsoWQO1fohSpbc1KbA-@ds050077.mongolab.com:50077/MongoLab-1');
+// mongoose.connect('mongodb://localhost/photoYarn');
+mongoose.connect('mongodb://MongoLab-1:8fslrNoqQA8bTtE9toqkplr32HsoWQO1fohSpbc1KbA-@ds050077.mongolab.com:50077/MongoLab-1');
 
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
+// client will 
 app.get('/yarns', function(req, res) {
 
     api.getAllYarns().exec(function(err, yarns) {
@@ -40,7 +41,7 @@ app.post('/yarns', function(req, res) {
     var params = {
         caption: req.body.caption,
         creatorId: req.body.creatorId,
-        photoUrl: req.body.photoUrl
+        imgurId: req.body.imgurId
     };
 
     api.createYarn(params);
@@ -48,6 +49,10 @@ app.post('/yarns', function(req, res) {
 
 app.post('photo', function(req, res) {
     console.log('post to photo')
+});
+
+app.get('*', function(req, res) {
+    res.send(404, 'Page not found');
 });
 
 module.exports = app;
