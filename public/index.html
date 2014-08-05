@@ -8,17 +8,30 @@
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script>
         console.log('aaaaaahhhhhhhh')
+        // $.ajax({
+        //     type: 'POST',
+        //     // url: 'http://photoyarn.azurewebsites.net/yarns',
+        //     url: 'http://localhost:8080/yarns',
+        //     data: {
+        //         photoUrl: 'http://static.tumblr.com/81b6d42b4064def5e9062d5f4410c820/betml74/Yl5ml0lia/tumblr_static_impress.jpg',
+        //         caption: 'i like kittens',
+        //         creatorId: 1
+        //     },
+        //     success: function(data, status) {
+        //         console.log('data', data);
+        //         console.log('status', status);
+        //     },
+        //     error: function() {
+        //         console.log('there was an error');
+        //     }
+        // })
         $.ajax({
-            type: 'POST',
-            url: 'http://photoyarn.azurewebsites.net/yarns',
-            data: {
-                photoUrl: 'http://cdn.theanimals.pics/pictures/puppypicsonline.com/wp-content/uploads/2012/12/Christmas-Puppy-puppies-15897189-1280-800.jpg',
-                caption: 'i like puppies',
-                creatorId: 0
-            },
+            type: 'GET',
+            // url: 'http://photoyarn.azurewebsites.net/yarns',
+            url: 'http://localhost:8080/yarns',
             success: function(data, status) {
-                console.log('data', data);
-                console.log('status', status);
+                // console.log('success, data', data);
+                console.log(data);
             },
             error: function() {
                 console.log('there was an error');
