@@ -20,13 +20,14 @@ app.use(bodyParser.urlencoded({
 // api.removeAllPhotos();
 
 var mongoLabUrl;
+console.log('======================================================')
+console.log(process.env.mongoLab);
 
 // if running locally
 if (!process.env.mongoLab) {
     mongoLabUrl = 'mongodb://localhost/photoYarn';
 } else {
     // not running locally
-    console.log(mongoLabUrl);
     mongoLabUrl = process.env.mongoLab;
 }
 
