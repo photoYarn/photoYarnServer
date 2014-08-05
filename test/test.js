@@ -4,93 +4,121 @@ var request = require('supertest');
 var expect = require('chai').expect;
 var app = require('../app.js');
 
-describe('GET', function() {
-    it('should reject unrecognized routes', function(done) {
+describe('Server Routes', function() {
+    // GET /
+    it('should redirect root route to index', function(done) {
+        request(app)
+            .get('/')
+            .expect(200, done);
+    });
+
+    // GET /boogers
+    it('should reject unrecognized GET routes', function(done) {
         request(app)
             .get('/boogers')
             .expect(404, done)
     });
+
+    // POST /boogers
+    it('should reject unrecognized POST routes', function(done) {
+        request(app)
+            .post('/boogers')
+            .expect(404, done)
+    });
 })
 
-xdescribe('Feed', function() {
-    it('should retrieve all threads', function() {
+describe('Feed API', function() {
+    xit('should retrieve all threads', function() {
+        request(app)
+            .get('/yarns')
+            .expect(200, done);
     });
 
-    it('should retrieve the first X threads', function() {
+    xit('should retrieve the first X threads', function() {
     });
 
-    it('should retrieve threads from index X to Y', function() {
+    xit('should retrieve threads from index X to Y', function() {
     });
 
-    it('should retrieve the first X photos from each retrieved thread', function() {
-    });
-});
-
-xdescribe('Thread', function() {
-    it('should create a new thread', function() {
-    });
-
-    it('should retrieve a thread', function() {
-    });
-
-    it('should delete a thread', function() {
+    xit('should retrieve the first X photos from each retrieved thread', function() {
     });
 });
 
-xdescribe('Photo', function() {
-    it('should create a photo', function() {
+describe('Thread API', function() {
+    xit('should create a new thread', function() {
+        request(app)
+            .post('/yarns')
+            .expect(200, done);
     });
 
-    it('should retrieve a photo', function() {
+    xit('should retrieve a thread', function() {
     });
 
-    it('delete a photo', function() {
+    xit('should delete a thread', function() {
+    });
+});
+
+describe('Photo API', function() {
+    xit('should create a photo', function() {
+        request(app)
+            .post('photo')
+            .expect(200, done);
+    });
+
+    xit('should error handle a ridiculously large photo', function() {
+
+    });
+
+    xit('should retrieve a photo', function() {
+    });
+
+    xit('delete a photo', function() {
     });
 
     describe('Photo Comments', function() {
-        it('should create a comment', function() {
+        xit('should create a comment', function() {
         });
 
-        it('should retrieve comments', function() {
+        xit('should retrieve comments', function() {
         });
 
-        it('should delete a comment', function() {
+        xit('should delete a comment', function() {
         });
 
-        it('should update a comment', function() {
+        xit('should update a comment', function() {
         });
     });
 
     describe('Photo Likes', function() {
-        it('should increment Likes', function() {
+        xit('should increment Likes', function() {
         });
     });
 });
 
-xdescribe('User', function() {
-    it('should create a new user', function() {
+describe('User API', function() {
+    xit('should create a new user', function() {
     });
 
-    it('should retrieve a user profile', function() {
+    xit('should retrieve a user profile', function() {
     });
 
-    it('should delete a user', function() {
+    xit('should delete a user', function() {
     });
 
-    it('should update user profile', function() {
+    xit('should update user profile', function() {
     });
 });
 
 
-xdescribe('Authentication', function() {
-    it('should accept good credentials', function() {
+describe('Authentication API', function() {
+    xit('should accept good credentials', function() {
     });
 
-    it('should reject bad credentials', function() {
+    xit('should reject bad credentials', function() {
     });
 
     describe('should block', function() {
-        it('XSS attacks', function() {
+        xit('XSS attacks', function() {
         });
     });
 });
