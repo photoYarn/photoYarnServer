@@ -6,10 +6,21 @@ var app = require('../app.js');
 
 describe('Server Routes', function() {
     // GET /
-    it('should redirect root route to index', function(done) {
+    it('should redirect root GET route to index', function(done) {
         request(app)
             .get('/')
-            .expect(200, done);
+            .expect(200)
+            .end(function(err, res) {
+                expect(res.text.indexOf("i hate deploying")).to.not.equal(-1);
+                done();
+            });
+    });
+
+    // POST /
+    it('should reject root POST route', function(done) {
+        request(app)
+            .post('/')
+            .expect(404, done)
     });
 
     // GET /boogers
@@ -72,7 +83,7 @@ describe('Photo API', function() {
     xit('should retrieve a photo', function() {
     });
 
-    xit('delete a photo', function() {
+    xit('should delete a photo', function() {
     });
 
     describe('Photo Comments', function() {
