@@ -65,6 +65,7 @@ xdescribe('User API', function() {
 
 describe('Thread API', function() {
     it('should create a new thread', function(done) {
+        // TODO refactor prepopulation and verification into functions
         // submit post request to create thread
         var threadData = [
             {
@@ -150,6 +151,7 @@ xdescribe('Photo API', function() {
 
 describe('Feed API', function() {
     it('should retrieve all threads', function(done) {
+        // TODO refactor prepopulation and verification into functions
         // populate database with target threads
         var threadData = [
             {
@@ -190,7 +192,8 @@ describe('Feed API', function() {
                 // mark returned threads
                 var data = res.body;
                 for (var i = 0; i < data.length; i++) {
-                  expected[data[i].caption] = true;
+                    // TODO verify individual values
+                    expected[data[i].caption] = true;
                 }
 
                 // verify all expected threads found
