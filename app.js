@@ -28,6 +28,12 @@ console.log('===============================================================')
 // connect to mongodb
 mongoose.connect(mongoLabUrl);
 
+app.all('*', function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    next();
+});
+
 app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
@@ -40,7 +46,11 @@ app.get('/yarns', function(req, res) {
         // yarns is an array of yarn objects
         // each yarn object should have an array
         // of imgur photo id's
-        res.send(yarns);
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(200, yarns);
+        }
     });
 
 });
@@ -56,8 +66,11 @@ app.post('/yarns', function(req, res) {
     };
 
     api.createYarn(params).save(function(err, yarn, numAffected) {
-        // res.send(200, 'Kia Optimaaaa Fathiiii');
-        res.send(200, yarn);
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(200, 'successful post');
+        }
 
     });
 });

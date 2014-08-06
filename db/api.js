@@ -24,8 +24,11 @@ exports.addPhoto = function(params, res) {
             // console.log('err', err);
             // console.log('how many photos', yarn.imgurIds.length);
             // console.log('num', num);
-
-            res.send(200, 'Kia is kewl');
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(200, 'Kia is kewl');
+            }
         });
         // instantiate photo model instance
     });
