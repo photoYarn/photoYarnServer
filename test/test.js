@@ -7,7 +7,7 @@ var app = require('../app.js');
 describe('Server Routes', function() {
     // TODO uncomment test once root GET route no longer used for server debugging
     // GET /
-    it('should reject root GET route', function(done) {
+    xit('should reject root GET route', function(done) {
         request(app)
             .get('/')
             .expect(404, done);
@@ -66,25 +66,40 @@ xdescribe('User API', function() {
 describe('Thread API', function() {
     it('should create a new thread', function(done) {
         // submit post request to create thread
-        request(app)
-            .post('/yarns')
-            .expect(200)
-            .type('form')
-            .send({
+        var threadData = [
+            {
                 caption: 'Test Thread 1',
-                creatorId: '9000001',
-                imgurId: 'http://bogus.com/91',
-            })
-            .accept('application/json')
-            .end(function(err, res) {
-                // verify no error
-                if (err) { console.log(err) }
-                expect(err).to.equal(null);
+                creatorId: '9400001',
+                link: 'http://bogus.com/941',
+            }
+        ];
+        for (var i = 0; i < threadData.length; i++) {
+            request(app)
+                .post('/yarns')
+                .expect(200)
+                .type('form')
+                .send(threadData[i])
+                .accept('application/json')
+                .end(function(i) {
+                    return function(err, res) {
+                        // verify no error
+                        if (err) { console.log(err) }
+                        expect(err).to.equal(null);
 
-                // verify success return value
-                expect(res.text).to.equal('successful post');
-                done();
-            });
+                        // verify new entry response
+                        var resData = JSON.parse(res.text);
+                        for (var key in threadData[i]) {
+                            if (key === 'link') {
+                                expect(resData.links.indexOf(threadData[i][key])).to.not.equal(-1);
+                            } else {
+                                expect(resData[key].toString()).to.equal(threadData[i][key]);
+                            }
+                        }
+
+                        done();
+                    };
+                }(i));
+        }
 
         // verify thread created in following test
     });
@@ -136,29 +151,28 @@ xdescribe('Photo API', function() {
 describe('Feed API', function() {
     it('should retrieve all threads', function(done) {
         // populate database with target threads
-        var feedThreads = [
+        var threadData = [
             {
                 caption: 'Test Feed 1',
                 creatorId: '9600001',
-                imgurId: 'http://bogus.com/961',
+                link: 'http://bogus.com/961',
             },
             {
                 caption: 'Test Feed 2',
                 creatorId: '9600002',
-                imgurId: 'http://bogus.com/962',
+                link: 'http://bogus.com/962',
             }
         ];
-        for (var i = 0; i < feedThreads.length; i++) {
+        for (var i = 0; i < threadData.length; i++) {
             request(app)
                 .post('/yarns')
                 .expect(200)
                 .type('form')
-                .send(feedThreads[i])
+                .send(threadData[i])
                 .accept('application/json')
                 .end(function(err, res) {
                     if (err) { console.log(err) }
-                    // verify success return value
-                    expect(res.text).to.equal('successful post');
+                    expect(err).to.equal(null);
                 });
         }
 
@@ -169,8 +183,8 @@ describe('Feed API', function() {
             .end(function(err, res) {
                 // build hash of expected threads
                 var expected = {};
-                for (var i = 0; i < feedThreads.length; i++) {
-                    expected[feedThreads[i].caption] = false;
+                for (var i = 0; i < threadData.length; i++) {
+                    expected[threadData[i].caption] = false;
                 }
 
                 // mark returned threads
