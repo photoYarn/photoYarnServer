@@ -56,8 +56,11 @@ app.post('/yarns', function(req, res) {
     };
 
     api.createYarn(params).save(function(err, yarn, numAffected) {
-        // res.send(200, 'Kia Optimaaaa Fathiiii');
-        res.send(200, yarn);
+        if (err) {
+            res.send(405, err);
+        } else {
+            res.send(200, 'successful post');
+        }
 
     });
 });
