@@ -3,7 +3,7 @@
     <title></title>
 </head>
 <body>
-    <h1> i hate deploying </h1>
+    <h1> why wont this work </h1>
 
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script>
@@ -11,9 +11,9 @@
         // $.ajax({
         //     type: 'POST',
         //     // url: 'http://photoyarn.azurewebsites.net/yarns',
-        //     url: 'http://localhost:8080/yarns',
+        //     url: 'http://localhost:8100/yarns',
         //     data: {
-        //         photoUrl: 'http://static.tumblr.com/81b6d42b4064def5e9062d5f4410c820/betml74/Yl5ml0lia/tumblr_static_impress.jpg',
+        //         imgurId: 'http://static.tumblr.com/81b6d42b4064def5e9062d5f4410c820/betml74/Yl5ml0lia/tumblr_static_impress.jpg',
         //         caption: 'i like kittens',
         //         creatorId: 1
         //     },
@@ -25,18 +25,34 @@
         //         console.log('there was an error');
         //     }
         // })
-        $.ajax({
-            type: 'GET',
-            // url: 'http://photoyarn.azurewebsites.net/yarns',
-            url: 'http://localhost:8080/yarns',
-            success: function(data, status) {
-                // console.log('success, data', data);
-                console.log(data);
-            },
-            error: function() {
-                console.log('there was an error');
-            }
-        })
+        // $.ajax({
+        //     type: 'GET',
+        //     url: 'http://photoyarn.azurewebsites.net/yarns',
+        //     // url: 'http://localhost:8100/yarns',
+        //     success: function(data, status) {
+        //         // console.log('success, data', data);
+        //         console.log(data);
+        //     },
+        //     error: function() {
+        //         console.log('there was an error');
+        //     }
+        // })
+        // $.ajax({
+        //     type: 'POST',
+        //     url: 'http://photoyarn.azurewebsites.net/photo',
+        //     // url: 'http://localhost:8100/photo',
+        //     data: {
+        //         imgurId: 'http://www.davey.com/media/1001/home-tree.png?width=960&height=520&quality=80&mode=crop',
+        //         yarnId: "53e17bcbb782f3880cf5d957"
+        //     },
+        //     success: function(data, status) {
+        //         console.log('data', data);
+        //         console.log('status', status);
+        //     },
+        //     error: function() {
+        //         console.log('there was an error');
+        //     }
+        // })
     </script>
 </body>
 </html>
