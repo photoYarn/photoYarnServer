@@ -87,8 +87,8 @@ describe('Thread API', function() {
                         if (err) { console.log(err) }
                         expect(err).to.equal(null);
 
-                        // verify new entry response
-                        var resData = JSON.parse(res.text);
+                        // verify new thread response
+                        var resData = res.body;
                         for (var key in threadData[i]) {
                             if (key === 'link') {
                                 expect(resData.links.indexOf(threadData[i][key])).to.not.equal(-1);
@@ -112,11 +112,53 @@ describe('Thread API', function() {
     });
 });
 
-xdescribe('Photo API', function() {
-    xit('should create a photo', function() {
+describe('Photo API', function() {
+    it('should create a photo', function(done) {
+        // populate database with target thread
+        var threadData = {
+            caption: 'Test Photo Thread 1',
+            creatorId: '9500001',
+            link: 'http://bogus.com/951',
+        };
         request(app)
-            .post('photo')
-            .expect(200, done);
+            .post('/yarns')
+            .expect(200)
+            .type('form')
+            .send(threadData)
+            .accept('application/json')
+            .end(function(err, res) {
+                if (err) { console.log(err) }
+                expect(err).to.equal(null);
+
+                // attach a photo to thread after thread created
+                var photoData = {
+                    yarnId: res.body._id,
+                    link: 'http://bogus.com/9512',
+                };
+
+                request(app)
+                    .post('/photo')
+                    .expect(200)
+                    .type('form')
+                    .send(photoData)
+                    .accept('application/json')
+                    .end(function(err, res) {
+                        if (err) { console.log(err) }
+                        expect(err).to.equal(null);
+
+                        // verify returned yarn data includes new photo
+                        var resData = res.body;
+                        for (var key in photoData) {
+                            if (key === 'link') {
+                                expect(resData.links.indexOf(photoData[key])).to.not.equal(-1);
+                            } else if (key === 'yarnId') {
+                                expect(resData._id.toString()).to.equal(photoData[key]);
+                            }
+                        }
+
+                        done();
+                    });
+            });
     });
 
     xit('should error handle a ridiculously large photo', function() {
