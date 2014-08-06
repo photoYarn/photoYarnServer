@@ -3,26 +3,26 @@ var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 
 exports.createYarn = function(params) {
-    exports.createPhoto({imgurId: params.imgurId})
-
+    exports.createPhoto({link: params.link})
+    console.log('params.link', params.link);
     return new Yarn({
         caption: params.caption,
         creatorId: params.creatorId,
-        imgurIds: [params.imgurId]
+        links: [params.link]
     });
 
 };
 
 exports.addPhoto = function(params, res) {
     
-    exports.createPhoto({ imgurId: params.imgurId});
+    exports.createPhoto({ link: params.link});
 
     Yarn.findOne({_id: params.yarnId}, function(err, yarn) {
-        yarn.imgurIds.push(params.imgurId);
+        yarn.links.push(params.link);
         console.log('yarn', yarn);
         yarn.save(function(err, yarn, num) {
             // console.log('err', err);
-            // console.log('how many photos', yarn.imgurIds.length);
+            // console.log('how many photos', yarn.links.length);
             // console.log('num', num);
             if (err) {
                 res.send(err);
@@ -41,7 +41,7 @@ exports.getAllYarns = function(res) {
 
 exports.createPhoto = function(params) {
     new Photo({
-        url: params.imgurId
+        url: params.link
     })
     .save(function(err, photo, num) {
         // console.log('err', err);
