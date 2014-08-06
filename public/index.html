@@ -10,11 +10,11 @@
         console.log('aaaaaahhhhhhhh')
         // $.ajax({
         //     type: 'POST',
-        //     // url: 'http://photoyarn.azurewebsites.net/yarns',
-        //     url: 'http://localhost:8100/yarns',
+        //     url: 'http://photoyarn.azurewebsites.net/yarns',
+        //     // url: 'http://localhost:8100/yarns',
         //     data: {
         //         imgurId: 'http://static.tumblr.com/81b6d42b4064def5e9062d5f4410c820/betml74/Yl5ml0lia/tumblr_static_impress.jpg',
-        //         caption: 'i like kittens',
+        //         caption: 'i like dogs',
         //         creatorId: 1
         //     },
         //     success: function(data, status) {
@@ -25,18 +25,18 @@
         //         console.log('there was an error');
         //     }
         // })
-        // $.ajax({
-        //     type: 'GET',
-        //     url: 'http://photoyarn.azurewebsites.net/yarns',
-        //     // url: 'http://localhost:8100/yarns',
-        //     success: function(data, status) {
-        //         // console.log('success, data', data);
-        //         console.log(data);
-        //     },
-        //     error: function() {
-        //         console.log('there was an error');
-        //     }
-        // })
+        $.ajax({
+            type: 'GET',
+            url: 'http://photoyarn.azurewebsites.net/yarns',
+            // url: 'http://localhost:8100/yarns',
+            success: function(data, status) {
+                // console.log('success, data', data);
+                console.log(data);
+            },
+            error: function() {
+                console.log('there was an error');
+            }
+        })
         // $.ajax({
         //     type: 'POST',
         //     url: 'http://photoyarn.azurewebsites.net/photo',
