@@ -11,7 +11,11 @@
     "mongoose-auto-increment": "^3.0.8",
     "morgan": "^1.2.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^1.9.1",
+    "mocha": "^1.21.3",
+    "supertest": "^0.13.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
