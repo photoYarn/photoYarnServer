@@ -13,19 +13,21 @@ exports.createYarn = function(params) {
 
 };
 
-exports.addPhoto = function(params) {
+exports.addPhoto = function(params, res) {
     
+    exports.createPhoto({ imgurId: params.imgurId});
+
     Yarn.findOne({_id: params.yarnId}, function(err, yarn) {
         yarn.imgurIds.push(params.imgurId);
         console.log('yarn', yarn);
         yarn.save(function(err, yarn, num) {
-            console.log('err', err);
-            console.log('how many photos', yarn.imgurIds.length);
-            console.log('num', num);
-        });
+            // console.log('err', err);
+            // console.log('how many photos', yarn.imgurIds.length);
+            // console.log('num', num);
 
+            res.send(200, 'Kia is kewl');
+        });
         // instantiate photo model instance
-        exports.createPhoto({ imgurId: params.imgurId});
     });
 };
 

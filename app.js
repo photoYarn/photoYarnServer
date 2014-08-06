@@ -21,8 +21,7 @@ app.use(bodyParser.urlencoded({
 // api.removeAllPhotos();
 
 
-console.log('======================================================')
-console.log(mongoLabUrl);
+console.log('===============================================================')
 
 
 
@@ -66,7 +65,13 @@ app.post('/yarns', function(req, res) {
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
 app.post('/photo', function(req, res) {
-    console.log('post to photo')
+    console.log('hi')
+    var params = {
+        yarnId: req.body.yarnId,
+        imgurId: req.body.imgurId
+    };
+
+    api.addPhoto(params, res);
 });
 
 app.get('*', function(req, res) {

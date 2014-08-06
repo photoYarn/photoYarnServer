@@ -3,7 +3,7 @@
     <title></title>
 </head>
 <body>
-    <h1> i am so sleepy </h1>
+    <h1> why wont this work </h1>
 
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script>
@@ -25,13 +25,29 @@
         //         console.log('there was an error');
         //     }
         // })
+        $.ajax({
+            type: 'GET',
+            url: 'http://photoyarn.azurewebsites.net/yarns',
+            // url: 'http://localhost:8100/yarns',
+            success: function(data, status) {
+                // console.log('success, data', data);
+                console.log(data);
+            },
+            error: function() {
+                console.log('there was an error');
+            }
+        })
         // $.ajax({
-        //     type: 'GET',
+        //     type: 'POST',
         //     // url: 'http://photoyarn.azurewebsites.net/yarns',
-        //     url: 'http://localhost:8100/yarns',
+        //     url: 'http://localhost:8100/photo',
+        //     data: {
+        //         imgurId: 'http://www.funchap.com/wp-content/uploads/2014/05/Cute-Dog-Wallpapers.jpg',
+        //         yarnId: "53e15c7ee4a8e1a815e05de4"
+        //     },
         //     success: function(data, status) {
-        //         // console.log('success, data', data);
-        //         console.log(data);
+        //         console.log('data', data);
+        //         console.log('status', status);
         //     },
         //     error: function() {
         //         console.log('there was an error');
