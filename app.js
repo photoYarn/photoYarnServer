@@ -20,14 +20,12 @@ app.use(bodyParser.urlencoded({
 // api.removeAllYarns();
 // api.removeAllPhotos();
 
-
 console.log('===============================================================')
-
-
 
 // connect to mongodb
 mongoose.connect(mongoLabUrl);
 
+// enable CORS
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "X-Requested-With");
@@ -42,14 +40,11 @@ app.get('/', function(req, res) {
 // load up a view of all the yarns
 app.get('/yarns', function(req, res) {
 
-    api.getAllYarns().exec(function(err, yarns) {
-        // yarns is an array of yarn objects
-        // each yarn object should have an array
-        // of imgur photo id's
+    api.getAllYarns(function(err, yarns) {
         if (err) {
             res.send(err);
         } else {
-            res.send(200, yarns);
+            res.status(200).send(yarns);
         }
     });
 
@@ -59,36 +54,32 @@ app.get('/yarns', function(req, res) {
 app.post('/yarns', function(req, res) {
     console.log('req body', req.body);
 
-    var params = {
-        caption: req.body.caption,
-        creatorId: req.body.creatorId,
-        link: req.body.link
-    };
-
-    api.createYarn(params).save(function(err, yarn, numAffected) {
+    api.createYarn(req, function(err, yarn, numAffected) {
         if (err) {
             res.send(err);
         } else {
             res.status(200).send(yarn);
         }
-
     });
+
 });
 
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
 app.post('/photo', function(req, res) {
-    console.log('hi')
-    var params = {
-        yarnId: req.body.yarnId,
-        link: req.body.link
-    };
 
-    api.addPhoto(params, res);
+    api.addPhoto(req, function(err, yarn, num) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.status(200).send(yarn);
+        }
+    });
+    
 });
 
 app.get('*', function(req, res) {
-    res.send(404, 'Page not found');
+    res.status(404).send('Page not found');
 });
 
 module.exports = app;
