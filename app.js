@@ -62,14 +62,14 @@ app.post('/yarns', function(req, res) {
     var params = {
         caption: req.body.caption,
         creatorId: req.body.creatorId,
-        imgurId: req.body.imgurId
+        link: req.body.link
     };
 
     api.createYarn(params).save(function(err, yarn, numAffected) {
         if (err) {
             res.send(err);
         } else {
-            res.send(200, 'successful post');
+            res.status(200).send(yarn);
         }
 
     });
@@ -81,7 +81,7 @@ app.post('/photo', function(req, res) {
     console.log('hi')
     var params = {
         yarnId: req.body.yarnId,
-        imgurId: req.body.imgurId
+        link: req.body.link
     };
 
     api.addPhoto(params, res);
