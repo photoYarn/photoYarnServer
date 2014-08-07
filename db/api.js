@@ -17,7 +17,6 @@ exports.addPhoto = function(req, callback) {
         
     Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
         yarn.links.push(req.body.link);
-        console.log('yarn', yarn);
         yarn.save(function(err, yarn, num) {
             // console.log('err', err);
             // console.log('how many photos', yarn.links.length);

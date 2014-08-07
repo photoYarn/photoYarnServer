@@ -52,7 +52,6 @@ app.get('/getAllYarns', function(req, res) {
 
 // called when creating a new yarn
 app.post('/createNewYarn', function(req, res) {
-    console.log('req body', req.body);
 
     api.createYarn(req, function(err, yarn, numAffected) {
         if (err) {
