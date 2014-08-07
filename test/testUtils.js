@@ -4,8 +4,7 @@ var expect = require('chai').expect;
 
 var testUtils = exports;
 
-
-testUtils.populateThreads = function(options) {
+testUtils.populateThreads = function(options, done) {
     options.numThreads = options.numThreads || 1;
     options.caption = options.caption || 'Proto Thread';
     options.creatorId = options.creatorId || '9000000';
@@ -23,6 +22,7 @@ testUtils.populateThreads = function(options) {
     }
 
     // populate database using http requests
+    var asyncCounter = 0;
     for (var i = 0; i < threadData.length; i++) {
         request(app)
             .post('/createNewYarn')
@@ -30,10 +30,19 @@ testUtils.populateThreads = function(options) {
             .type('form')
             .send(threadData[i])
             .accept('application/json')
-            .end(function(err, res) {
-                if (err) { console.log(err) }
-                expect(err).to.equal(null);
-            });
+            .end(function(i) {
+                return function(err, res) {
+                    if (err) { console.log(err) }
+                    expect(err).to.equal(null);
+                    threadData[i]._id = res.body._id;
+
+                    // flag as done after completion of all requests
+                    asyncCounter++;
+                    if (asyncCounter === options.numThreads) {
+                        done();
+                    }
+                };
+            }(i));
     }
 
     // return source data
