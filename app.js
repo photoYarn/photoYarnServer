@@ -38,7 +38,7 @@ app.get('/', function(req, res) {
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
-app.get('/yarns', function(req, res) {
+app.get('/getAllYarns', function(req, res) {
 
     api.getAllYarns(function(err, yarns) {
         if (err) {
@@ -51,7 +51,7 @@ app.get('/yarns', function(req, res) {
 });
 
 // called when creating a new yarn
-app.post('/yarns', function(req, res) {
+app.post('/createNewYarn', function(req, res) {
     console.log('req body', req.body);
 
     api.createYarn(req, function(err, yarn, numAffected) {
@@ -66,7 +66,7 @@ app.post('/yarns', function(req, res) {
 
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
-app.post('/photo', function(req, res) {
+app.post('/addToYarn', function(req, res) {
 
     api.addPhoto(req, function(err, yarn, num) {
         if (err) {
