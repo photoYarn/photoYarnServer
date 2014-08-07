@@ -1,8 +1,9 @@
 'use strict';
 
 var request = require('supertest');
-var expect = require('chai').expect;
 var app = require('../app.js');
+var expect = require('chai').expect;
+var testUtils = require('./testUtils.js');
 
 describe('Server Routes', function() {
     // TODO uncomment test once root GET route no longer used for server debugging
@@ -195,30 +196,12 @@ describe('Feed API', function() {
     it('should retrieve all threads', function(done) {
         // TODO refactor prepopulation and verification into functions
         // populate database with target threads
-        var threadData = [
-            {
-                caption: 'Test Feed 1',
-                creatorId: '9600001',
-                link: 'http://bogus.com/961',
-            },
-            {
-                caption: 'Test Feed 2',
-                creatorId: '9600002',
-                link: 'http://bogus.com/962',
-            }
-        ];
-        for (var i = 0; i < threadData.length; i++) {
-            request(app)
-                .post('/yarns')
-                .expect(200)
-                .type('form')
-                .send(threadData[i])
-                .accept('application/json')
-                .end(function(err, res) {
-                    if (err) { console.log(err) }
-                    expect(err).to.equal(null);
-                });
-        }
+        var threadData = testUtils.populateThreads({
+            numThreads: 2,
+            caption: 'Test Feed',
+            creatorId: '9600000',
+            link: 'http://www.bogus.com/99600000',
+        });
 
         // request all threads
         request(app)
