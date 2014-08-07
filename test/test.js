@@ -193,15 +193,18 @@ describe('Photo API', function() {
 });
 
 describe('Feed API', function() {
-    it('should retrieve all threads', function(done) {
+    var threadData;
+    before(function(done) {
         // populate database with target threads
-        var threadData = testUtils.populateThreads({
+        threadData = testUtils.populateThreads({
             numThreads: 2,
             caption: 'Test Feed',
             creatorId: '9600000',
             link: 'http://www.bogus.com/99600000',
-        });
+        }, done);
+    });
 
+    it('should retrieve all threads', function(done) {
         // request all threads
         request(app)
             .get('/getAllYarns')
