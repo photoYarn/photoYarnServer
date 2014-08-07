@@ -77,7 +77,7 @@ describe('Thread API', function() {
         ];
         for (var i = 0; i < threadData.length; i++) {
             request(app)
-                .post('/yarns')
+                .post('/createNewYarn')
                 .expect(200)
                 .type('form')
                 .send(threadData[i])
@@ -122,7 +122,7 @@ describe('Photo API', function() {
             link: 'http://bogus.com/951',
         };
         request(app)
-            .post('/yarns')
+            .post('/createNewYarn')
             .expect(200)
             .type('form')
             .send(threadData)
@@ -138,7 +138,7 @@ describe('Photo API', function() {
                 };
 
                 request(app)
-                    .post('/photo')
+                    .post('/addToYarn')
                     .expect(200)
                     .type('form')
                     .send(photoData)
@@ -194,7 +194,6 @@ describe('Photo API', function() {
 
 describe('Feed API', function() {
     it('should retrieve all threads', function(done) {
-        // TODO refactor prepopulation and verification into functions
         // populate database with target threads
         var threadData = testUtils.populateThreads({
             numThreads: 2,
@@ -205,7 +204,7 @@ describe('Feed API', function() {
 
         // request all threads
         request(app)
-            .get('/yarns')
+            .get('/getAllYarns')
             .expect(200)
             .end(function(err, res) {
                 // build hash of expected threads

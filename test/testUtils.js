@@ -18,15 +18,14 @@ testUtils.populateThreads = function(options) {
         var newThread = {};
         newThread.caption = options.caption + ' ' + i;
         newThread.creatorId = options.creatorId + i;
-        var linkId = options.link.replace(/(\d+)$/, function(id) { return id + i; });
-        newThread.link = options.link;
+        newThread.link = options.link.replace(/(\d+)$/, function(id) { return id + i; });
         threadData.push(newThread);
     }
 
     // populate database using http requests
     for (var i = 0; i < threadData.length; i++) {
         request(app)
-            .post('/yarns')
+            .post('/createNewYarn')
             .expect(200)
             .type('form')
             .send(threadData[i])
