@@ -9,6 +9,7 @@ testUtils.populateThreads = function(options, done) {
     options.caption = options.caption || 'Proto Thread';
     options.creatorId = options.creatorId || '9000000';
     options.link = options.link || 'http://www.proto.com/99000000';
+    options.verify = options.verify || false;
 
     // create source data
     var threadData = [];
@@ -35,6 +36,18 @@ testUtils.populateThreads = function(options, done) {
                     if (err) { console.log(err) }
                     expect(err).to.equal(null);
                     threadData[i]._id = res.body._id;
+
+                    // verify return data
+                    if (options.verify) {
+                        var resData = res.body;
+                        for (var key in threadData[i]) {
+                            if (key === 'link') {
+                                expect(resData.links.indexOf(threadData[i][key])).to.not.equal(-1);
+                            } else {
+                                expect(resData[key].toString()).to.equal(threadData[i][key]);
+                            }
+                        }
+                    }
 
                     // flag as done after completion of all requests
                     asyncCounter++;
