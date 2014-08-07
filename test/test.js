@@ -66,44 +66,14 @@ xdescribe('User API', function() {
 
 describe('Thread API', function() {
     it('should create a new thread', function(done) {
-        // TODO refactor prepopulation and verification into functions
-        // submit post request to create thread
-        var threadData = [
-            {
-                caption: 'Test Thread 1',
-                creatorId: '9400001',
-                link: 'http://bogus.com/941',
-            }
-        ];
-        for (var i = 0; i < threadData.length; i++) {
-            request(app)
-                .post('/createNewYarn')
-                .expect(200)
-                .type('form')
-                .send(threadData[i])
-                .accept('application/json')
-                .end(function(i) {
-                    return function(err, res) {
-                        // verify no error
-                        if (err) { console.log(err) }
-                        expect(err).to.equal(null);
-
-                        // verify new thread response
-                        var resData = res.body;
-                        for (var key in threadData[i]) {
-                            if (key === 'link') {
-                                expect(resData.links.indexOf(threadData[i][key])).to.not.equal(-1);
-                            } else {
-                                expect(resData[key].toString()).to.equal(threadData[i][key]);
-                            }
-                        }
-
-                        done();
-                    };
-                }(i));
-        }
-
-        // verify thread created in following test
+        // create thread and verify success return
+        var threadData = testUtils.populateThreads({
+            numThreads: 1,
+            caption: 'Test Thread',
+            creatorId: '9400000',
+            link: 'http://www.bogus.com/99400000',
+            verify: true,
+        }, done);
     });
 
     xit('should retrieve a thread', function() {
@@ -129,7 +99,7 @@ describe('Photo API', function() {
         // attach a photo to target thread
         var photoData = {
             yarnId: threadData[0]._id,
-            link: 'http://www.bogus.com/99500011',
+            link: 'http://www.bogus.com/995000011',
         };
         request(app)
             .post('/addToYarn')
