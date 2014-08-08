@@ -34,8 +34,16 @@ var oauth = (function() {
         loginProcessed = false;
 
         loginWindow = window.open(FB_LOGIN_URL + '?client_id=' + appId + '&redirect_uri=' + oauthRedirectURL +
-                    '&response_type=token', '_blank', 'location=no');
+                    '&response_type=token&scope=email', '_blank', 'location=no');
 
+    };
+
+    var logout = function(callback) {
+        var access_token = tokenStore['access_token']
+        delete tokenStore['access_token'];
+        if (callback) {
+            callback(access_token);
+        }
     };
 
     var oauthCallback = function(url) {
@@ -78,7 +86,8 @@ var oauth = (function() {
     return {
         login: login,
         init: init,
-        oauthCallback: oauthCallback
+        oauthCallback: oauthCallback,
+        logout: logout
     }
 
 })();
