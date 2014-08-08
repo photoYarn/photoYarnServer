@@ -23,6 +23,10 @@ var oauth = (function() {
         }
     };
 
+    var isLoggedIn = function() {
+        return tokenStore.hasOwnProperty('access_token');
+    }
+
     var login = function(callback) {
         var loginWindow;
 
@@ -85,9 +89,10 @@ var oauth = (function() {
 
     return {
         login: login,
+        logout: logout,
+        isLoggedIn: isLoggedIn,
         init: init,
         oauthCallback: oauthCallback,
-        logout: logout
     }
 
 })();

@@ -29,7 +29,10 @@
             oauth.logout(function(token) {
                 console.log('you logged out', token)
             });
-        }
+        };
+        var isLoggedIn = function() {
+            return oauth.isLoggedIn();
+        };  
         // console.log('aaaaaahhhhhhhh')
         // $.ajax({
         //     type: 'POST',
