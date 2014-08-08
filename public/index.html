@@ -5,6 +5,7 @@
 <body>
     <h1> why wont this work </h1>
     <button onclick='login()'> Login </button>
+    <button onclick='logout()'> Logout </button>
 
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <!-- // <script src='jquery.ba-bbq.js'></script> -->
@@ -16,11 +17,19 @@
             oauth.login(function(response) {
                 if (response.status === 'connected') {
                     console.log('fb login success, received access token');
+
+                    // redirect to home page here?
+
                 } else {
                     console.log('login failed', response.error);
                 }
             });
         };
+        var logout = function() {
+            oauth.logout(function(token) {
+                console.log('you logged out', token)
+            });
+        }
         // console.log('aaaaaahhhhhhhh')
         // $.ajax({
         //     type: 'POST',

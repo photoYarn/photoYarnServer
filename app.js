@@ -39,6 +39,10 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
+app.get('/oauthcallback', function(req, res) {
+    res.sendfile(__dirname + '/public/index.html');
+});
+
 // client will call as soon as app loads to
 // load up a view of all the yarns
 app.get('/getAllYarns', function(req, res) {
