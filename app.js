@@ -17,6 +17,9 @@ app.use(bodyParser.urlencoded({
     extended: true
 }));
 
+// need this to server up html/css/js
+app.use(express.static(__dirname + '/public'));
+
 // api.removeAllYarns();
 // api.removeAllPhotos();
 

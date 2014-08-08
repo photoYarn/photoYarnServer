@@ -1,3 +1,5 @@
 node_modules/
 secrets.js
 oauthNotes.txt
+fbSecrets.txt
+oauthSteps.txt
