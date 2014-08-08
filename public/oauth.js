@@ -41,23 +41,38 @@ var oauth = (function() {
     var oauthCallback = function(url) {
         // Parse the OAuth data received from Facebook
         var queryString;
-        var obj;
+        var queryObj;
 
         loginProcessed = true;
-        if (url.indexOf("access_token=") > 0) {
+
+        if (url.indexOf("access_token=") !== -1) {
             queryString = url.substr(url.indexOf('#') + 1);
             queryObj = $.deparam(queryString)
             console.log(queryObj)
-            // tokenStore['fbtoken'] = obj['access_token'];
-            // if (loginCallback) loginCallback({status: 'connected', authResponse: {token: obj['access_token']}});
-        } 
-        // else if (url.indexOf("error=") > 0) {
-        //     queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
-        //     obj = parseQueryString(queryString);
-        //     if (loginCallback) loginCallback({status: 'not_authorized', error: obj.error});
-        // } else {
-        //     if (loginCallback) loginCallback({status: 'not_authorized'});
-        // }
+            tokenStore['access_token'] = queryObj['access_token'];
+            console.log(tokenStore)
+            if (loginCallback) {
+                loginCallback({
+                    status: 'connected', 
+                    token: queryObj['access_token']
+                });
+            }
+        } else if (url.indexOf("error=") !== -1) {
+            queryString = url.substring(url.indexOf('?') + 1, url.indexOf('#'));
+            queryObj = $.deparam(queryString);
+            if (loginCallback) {
+                loginCallback({
+                    status: 'not_authorized', 
+                    error: queryObj.error
+                });
+            }
+        } else {
+            if (loginCallback) {
+                loginCallback({
+                    status: 'not_authorized'
+                });
+            }
+        }
     };
 
     return {
