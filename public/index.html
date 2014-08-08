@@ -13,7 +13,13 @@
     <script>
         oauth.init({appId: 261431800718045});
         var login = function() {
-            oauth.login();
+            oauth.login(function(response) {
+                if (response.status === 'connected') {
+                    console.log('fb login success, received access token');
+                } else {
+                    console.log('login failed', response.error);
+                }
+            });
         };
         // console.log('aaaaaahhhhhhhh')
         // $.ajax({
