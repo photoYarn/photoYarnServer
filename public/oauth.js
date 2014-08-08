@@ -8,6 +8,11 @@ var oauth = (function() {
 
     var loginCallback;
     var loginProcessed;
+    var runningInCordova;
+
+    document.addEventListener('deviceready', function() {
+        runningInCordova = true;
+    }, false);
 
     var oauthRedirectURL = 'http://localhost:8100/oauthcallback.html';
 
@@ -17,10 +22,6 @@ var oauth = (function() {
         } else {
             throw 'appId param not set';
         }
-
-        if (params.tokenStore) {
-            tokenStore = params.tokenStore;
-        }
     };
 
     var isLoggedIn = function() {
@@ -28,17 +29,37 @@ var oauth = (function() {
     }
 
     var login = function(callback) {
-        var loginWindow;
-
         if (!appId) {
             callback({status: 'unkonwn', error: 'appId not set'});
         }
 
+        var loginWindowLoadHandler = function(event) {
+            var url = event.url;
+            console.log('im running in cordova')
+            if (url.indexOf('access_token') !== -1 || url.indexOf('error') !== -1) {
+                loginWindow.close();
+                oauthcallback(url);
+            }
+        };
+
+        var loginWindowExitHandler = function() {
+            loginWindow.removeEventListener('loadstart', loginWindowLoadHandler);
+            loginWindow.removeEventListener('exit', loginWindowExitHandler);
+        };
+
+        var loginWindow;
         loginCallback = callback;
         loginProcessed = false;
 
         loginWindow = window.open(FB_LOGIN_URL + '?client_id=' + appId + '&redirect_uri=' + oauthRedirectURL +
                     '&response_type=token&scope=email', '_blank', 'location=no');
+
+        if (runningInCordova) {
+            oauthRedirectURL = 'https://www.facebook.com/connect/login_success.html';
+            tokenStore = window.LocalStorage;
+            loginWindow.addEventListener('loadstart', loginWindowLoadHandler);
+            loginWindow.addEventListener('exit', loginWindowExitHandler);
+        }
 
     };
 
