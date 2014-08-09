@@ -39,8 +39,24 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
-app.get('/oauthcallback', function(req, res) {
-    res.sendfile(__dirname + '/public/index.html');
+app.get('/users', function(req, res) {
+    api.findUser(req, function(err, user) {
+        if (err) {
+            res.send(err, 'error in finding user');
+        } else if (user) {
+            // probably have to query db to find and
+            // send all relevant user data at this point
+            res.status(200).send(user, 'user already exists');
+        } else {
+            api.createUser(req, function(err, user, numAffected) {
+                if (err) {
+                    res.send(err, 'error in creating new user');
+                } else {
+                    res.status(200).send(user, 'new user successfully created');
+                }
+            });
+        }
+    });
 });
 
 // client will call as soon as app loads to
