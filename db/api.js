@@ -34,7 +34,7 @@ exports.addPhoto = function(req, callback) {
         
     Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
         yarn.links.push(req.body.link);
-        yarn.lastUpdated = Date.now;
+        yarn.lastUpdated = Date.now();
         yarn.save(function(err, yarn, num) {
             callback(err, yarn, num);
         });
@@ -44,6 +44,7 @@ exports.addPhoto = function(req, callback) {
 
 exports.getAllYarns = function(callback) {
     return Yarn.find({})
+        // return most recently edited yarns first
         .sort('-lastUpdated')
         .exec(function(err, yarns) {
             callback(err, yarns);
