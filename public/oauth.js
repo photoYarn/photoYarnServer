@@ -6,6 +6,7 @@ var oauth = (function() {
     var tokenStore = window.sessionStorage;
     var appId;
 
+    var oauthRedirectURL = 'http://localhost:8100/oauthcallback.html';
     var loginCallback;
     var loginProcessed;
     var runningInCordova;
@@ -14,7 +15,6 @@ var oauth = (function() {
         runningInCordova = true;
     }, false);
 
-    var oauthRedirectURL = 'http://localhost:8100/oauthcallback.html';
 
     var init = function(params) {
         if (params.appId) {
@@ -36,6 +36,8 @@ var oauth = (function() {
         var loginWindowLoadHandler = function(event) {
             var url = event.url;
             console.log('im running in cordova')
+            // add set timeout ==========================================================
+            // =======================================================================
             if (url.indexOf('access_token') !== -1 || url.indexOf('error') !== -1) {
                 loginWindow.close();
                 oauthcallback(url);
@@ -50,12 +52,15 @@ var oauth = (function() {
         var loginWindow;
         loginCallback = callback;
         loginProcessed = false;
+        if (runningInCordova) {
+            console.log('running in cordova!!!============================================')
+            oauthRedirectURL = 'https://www.facebook.com/connect/login_success.html';
+        }
 
         loginWindow = window.open(FB_LOGIN_URL + '?client_id=' + appId + '&redirect_uri=' + oauthRedirectURL +
-                    '&response_type=token&scope=email', '_blank', 'location=no');
+                    '&response_type=token&scope=public_profile', '_blank', 'location=no');
 
         if (runningInCordova) {
-            oauthRedirectURL = 'https://www.facebook.com/connect/login_success.html';
             tokenStore = window.LocalStorage;
             loginWindow.addEventListener('loadstart', loginWindowLoadHandler);
             loginWindow.addEventListener('exit', loginWindowExitHandler);
