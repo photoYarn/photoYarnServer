@@ -33,8 +33,9 @@
                             console.log(userData)
                             // request to /users
                             $.ajax({
-                                type: 'GET',
+                                type: 'POST',
                                 url: 'http://localhost:8100/users',
+                                data: userData,
                                 success: function(data) {
                                     console.log(data);
                                 },
