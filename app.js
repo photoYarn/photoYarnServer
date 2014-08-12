@@ -63,7 +63,7 @@ app.post('/users', function(req, res) {
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
-app.get('/getAllYarns/:id', function(req, res) {
+app.get('/getAllYarns/', function(req, res) {
 
     api.getAllYarns(req, res);
     
