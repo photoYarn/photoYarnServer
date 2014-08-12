@@ -55,8 +55,6 @@ exports.addPhoto = function(req, callback) {
     });
 };
 
-exports.getUserInfo = function
-
 exports.getAllYarns = function(req, callback) {
 
     User.findOne({ id: req.body.id }, function(err, user) {
