@@ -94,32 +94,32 @@ exports.addPhoto = function(req, res) {
 
 
 exports.getAllYarns = function(req, res) {
-    // User.findOne({ id: req.params.id }, function(err, user) {
+    User.findOne({ id: req.params.id }, function(err, user) {
 
-    //     if (err) {
-    //         res.send({err: err, msg: 'user not found'});
-    //     } else {
-    //         return Yarn.find({ _id: { $in: user.yarnIds } })
-    //                 .sort('-lastUpdated')
-    //                 .exec(function(err, yarns) {
-    //                     if (err) {
-    //                         res.send({err: err, msg: 'yarns could not be found'});
-    //                     } else {
-    //                         res.send(yarns);
-    //                     }
-    //                 });
-    //     }
-    // });
+        if (err) {
+            res.send({err: err, msg: 'user not found'});
+        } else {
+            return Yarn.find({ _id: { $in: user.yarnIds } })
+                    .sort('-lastUpdated')
+                    .exec(function(err, yarns) {
+                        if (err) {
+                            res.send({err: err, msg: 'yarns could not be found'});
+                        } else {
+                            res.send(yarns);
+                        }
+                    });
+        }
+    });
 
-    return Yarn.find({})
-            .sort('-lastUpdated')
-            .exec(function(err, yarns) {
-                if (err) {
-                    res.send(err);
-                } else {
-                    res.send(yarns)
-                }
-            })
+    // return Yarn.find({})
+    //         .sort('-lastUpdated')
+    //         .exec(function(err, yarns) {
+    //             if (err) {
+    //                 res.send(err);
+    //             } else {
+    //                 res.send(yarns)
+    //             }
+    //         })
 
 };
 
