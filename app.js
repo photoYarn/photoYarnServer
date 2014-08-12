@@ -63,16 +63,10 @@ app.post('/users', function(req, res) {
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
-app.get('/getAllYarns', function(req, res) {
+app.get('/getAllYarns/:id', function(req, res) {
 
-    api.getAllYarns(req, function(err, yarns) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarns);
-        }
-    });
-
+    api.getAllYarns(req, res);
+    
 });
 
 // called when creating a new yarn
