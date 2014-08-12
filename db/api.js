@@ -26,8 +26,16 @@ exports.createYarn = function(req, callback) {
         links: [req.body.link],
         lastUpdated: Date.now()
     }).save(function(err, yarn, numAffected) {
+
+        // add the id of the newly created yarn into the 
+        // list of yarn ids the user is contributing to
+        User.findOne({ id: req.body.creatorId }, function(err, user) {
+            user.yarnIds.push(yarn._id);
+        });
+
         callback(err, yarn, numAffected);
     });
+
 };
 
 exports.addPhoto = function(req, callback) {
@@ -36,19 +44,32 @@ exports.addPhoto = function(req, callback) {
         yarn.links.push(req.body.link);
         yarn.lastUpdated = Date.now();
         yarn.save(function(err, yarn, num) {
+
+            // client-side is not sending a creator id atm
+            User.findOne({ id: req.body.creatorId }, function(err, user) {
+                user.yarnIds.push(yarn._id);
+            });
+
             callback(err, yarn, num);
         });
     });
 };
 
+exports.getUserInfo = function
 
-exports.getAllYarns = function(callback) {
-    return Yarn.find({})
-        // return most recently edited yarns first
-        .sort('-lastUpdated')
-        .exec(function(err, yarns) {
-            callback(err, yarns);
-        });
+exports.getAllYarns = function(req, callback) {
+
+    User.findOne({ id: req.body.id }, function(err, user) {
+        var userYarns = user.yarnIds;
+
+        return Yarn.find({ _id: { $in: userYarns } })
+            // return most recently edited yarns first
+            .sort('-lastUpdated')
+            .exec(function(err, yarns) {
+                callback(err, yarns);
+            });
+    });
+
 };
 
 exports.removeAllPhotos = function() {

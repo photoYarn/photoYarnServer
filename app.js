@@ -60,11 +60,12 @@ app.post('/users', function(req, res) {
     });
 });
 
+
 // client will call as soon as app loads to
 // load up a view of all the yarns
 app.get('/getAllYarns', function(req, res) {
 
-    api.getAllYarns(function(err, yarns) {
+    api.getAllYarns(req, function(err, yarns) {
         if (err) {
             res.send(err);
         } else {

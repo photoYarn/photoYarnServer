@@ -5,7 +5,7 @@ var yarnSchema = new Schema({
     caption: String,
     creatorId: Number,
     links: [String],
-    lastUpdated: Date
+    lastUpdated: Date,
 });
 
 module.exports = mongoose.model('Yarn', yarnSchema);
