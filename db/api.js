@@ -18,41 +18,77 @@ exports.findUser = function(req, callback) {
     });
 };
 
-exports.createYarn = function(req, callback) {
- 
+exports.createYarn = function(req, res) {
+
     new Yarn({
         caption: req.body.caption,
         creatorId: req.body.creatorId,
         links: [req.body.link],
         lastUpdated: Date.now()
     }).save(function(err, yarn, numAffected) {
-
-        // add the id of the newly created yarn into the 
-        // list of yarn ids the user is contributing to
-        User.findOne({ id: req.body.creatorId }, function(err, user) {
-            
-            user.yarnIds.push(yarn._id);
-        });
-
-        callback(err, yarn, numAffected);
+        if (err) {
+            res.send({err: err, msg: 'error in creating new yarn'});
+        } else {
+            User.findOne({ id: req.body.creatorId }, function(err, user) {
+                if (err) {
+                    res.send({err: err, msg: 'error in finding user'});
+                } else {
+                    user.yarnIds.push(yarn._id);
+                    user.save(function(err, user, num) {
+                        if (err) {
+                            res.send({err: err, msg: 'error in updating user'});
+                        } else {
+                            res.status(200).send({user: user, msg: 'yarn successfully created, user updated'})
+                        }
+                    });
+                }
+            });
+        }
     });
 
 };
 
-exports.addPhoto = function(req, callback) {
+exports.addPhoto = function(req, res) {
         
+    // Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
+    //     yarn.links.push(req.body.link);
+    //     yarn.lastUpdated = Date.now();
+    //     yarn.save(function(err, yarn, num) {
+
+    //         // client-side is not sending a creator id atm
+    //         User.findOne({ id: req.body.creatorId }, function(err, user) {
+    //             user.yarnIds.push(yarn._id);
+    //         });
+
+    //         callback(err, yarn, num);
+    //     });
+    // });
+
     Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
-        yarn.links.push(req.body.link);
-        yarn.lastUpdated = Date.now();
-        yarn.save(function(err, yarn, num) {
-
-            // client-side is not sending a creator id atm
-            User.findOne({ id: req.body.creatorId }, function(err, user) {
-                user.yarnIds.push(yarn._id);
+        if (err) {
+            res.send({err: err, msg: 'error in finding yarn'});
+        } else {
+            yarn.links.push(req.body.link);
+            yarn.lastUpdated = Date.now();
+            yarn.save(function(err, yarn, num) {
+                User.findOne({ id: req.body.creatorId }, function(err, user) {
+                    if (err) {
+                        res.send({err: err, msg: 'error in finding yarn'});
+                    } else {
+                        if (user.yarnIds.indexOf(yarn._id) === -1) {
+                            user.yarnIds.push(yarn._id);
+                        }
+                        user.save(function(err, user, num) {
+                            if (err) {
+                                res.send({err: err, msg: 'error in updating user'});
+                            } else {
+                                res.status(200).send('photo successfully added and user updated')
+                            }
+                        });
+                    }
+                });
             });
-
-            callback(err, yarn, num);
-        });
+        }
     });
 };
 

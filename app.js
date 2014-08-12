@@ -65,7 +65,7 @@ app.post('/users', function(req, res) {
 // load up a view of all the yarns
 
 // TODO: put id param back in route later
-app.get('/getAllYarns/', function(req, res) {
+app.get('/getAllYarns', function(req, res) {
 
     api.getAllYarns(req, res);
     
@@ -74,13 +74,7 @@ app.get('/getAllYarns/', function(req, res) {
 // called when creating a new yarn
 app.post('/createNewYarn', function(req, res) {
 
-    api.createYarn(req, function(err, yarn, numAffected) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarn);
-        }
-    });
+    api.createYarn(req, res);
 
 });
 
@@ -88,13 +82,15 @@ app.post('/createNewYarn', function(req, res) {
 // in order to add a photo to a specific yarn
 app.post('/addToYarn', function(req, res) {
 
-    api.addPhoto(req, function(err, yarn, num) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarn);
-        }
-    });
+    // api.addPhoto(req, function(err, yarn, num) {
+    //     if (err) {
+    //         res.send(err);
+    //     } else {
+    //         res.status(200).send(yarn);
+    //     }
+    // });
+
+    api.addPhoto(req, res);
     
 });
 
