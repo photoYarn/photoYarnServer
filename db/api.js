@@ -57,15 +57,13 @@ exports.addPhoto = function(req, callback) {
 
 exports.getAllYarns = function(req, callback) {
 
-    User.findOne({ id: req.body.id }, function(err, user) {
 
-        return Yarn.find({ _id: { $in: user.yarnIds } })
-            // return most recently edited yarns first
-            .sort('-lastUpdated')
-            .exec(function(err, yarns) {
-                callback(err, yarns);
-            });
-    });
+    return Yarn.find()
+        // return most recently edited yarns first
+        .sort('-lastUpdated')
+        .exec(function(err, yarns) {
+            callback(err, yarns);
+        });
 
 };
 
