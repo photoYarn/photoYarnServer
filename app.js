@@ -68,6 +68,13 @@ app.get('/getYarnsBrowser', function(req, res) {
     
 });
 
+// route for working on browser
+app.get('/getYarnsBrowser/', function(req, res) {
+
+    api.getYarnsBrowser(req, res);
+    
+});
+
 // called when creating a new yarn
 app.post('/createNewYarn', isAuthorized, function(req, res) {
 
