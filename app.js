@@ -39,50 +39,42 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
-app.get('/users', function(req, res) {
+app.post('/users', function(req, res) {
+    console.log('post to users', req.body)
     api.findUser(req, function(err, user) {
         if (err) {
-            res.send(err, 'error in finding user');
+            res.send({err: err, msg: 'error in finding user'});
         } else if (user) {
             // probably have to query db to find and
             // send all relevant user data at this point
-            res.status(200).send(user, 'user already exists');
+            res.status(200).send({user: user, msg: 'user already exists'});
         } else {
             api.createUser(req, function(err, user, numAffected) {
                 if (err) {
-                    res.send(err, 'error in creating new user');
+                    res.send({err: err, msg: 'error in creating new user'});
                 } else {
-                    res.status(200).send(user, 'new user successfully created');
+                    res.status(200).send({user: user, msg: 'new user successfully created'});
                 }
             });
         }
     });
 });
 
+
 // client will call as soon as app loads to
 // load up a view of all the yarns
-app.get('/getAllYarns', function(req, res) {
 
-    api.getAllYarns(function(err, yarns) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarns);
-        }
-    });
+// TODO: put id param back in route later
+app.get('/getAllYarns/:id', function(req, res) {
 
+    api.getAllYarns(req, res);
+    
 });
 
 // called when creating a new yarn
 app.post('/createNewYarn', function(req, res) {
 
-    api.createYarn(req, function(err, yarn, numAffected) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarn);
-        }
-    });
+    api.createYarn(req, res);
 
 });
 
@@ -90,13 +82,15 @@ app.post('/createNewYarn', function(req, res) {
 // in order to add a photo to a specific yarn
 app.post('/addToYarn', function(req, res) {
 
-    api.addPhoto(req, function(err, yarn, num) {
-        if (err) {
-            res.send(err);
-        } else {
-            res.status(200).send(yarn);
-        }
-    });
+    // api.addPhoto(req, function(err, yarn, num) {
+    //     if (err) {
+    //         res.send(err);
+    //     } else {
+    //         res.status(200).send(yarn);
+    //     }
+    // });
+
+    api.addPhoto(req, res);
     
 });
 
