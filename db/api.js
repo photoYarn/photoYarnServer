@@ -55,18 +55,22 @@ exports.addPhoto = function(req, callback) {
     });
 };
 
-exports.getUserInfo = function
+exports.getAllYarns = function(req, res) {
+    User.findOne({ id: req.params.id }, function(err, user) {
 
-exports.getAllYarns = function(req, callback) {
-
-    User.findOne({ id: req.body.id }, function(err, user) {
-
-        return Yarn.find({ _id: { $in: user.yarnIds } })
-            // return most recently edited yarns first
-            .sort('-lastUpdated')
-            .exec(function(err, yarns) {
-                callback(err, yarns);
-            });
+        if (err) {
+            res.send({err: err, msg: 'user not found'});
+        } else {
+            return Yarn.find({ _id: { $in: user.yarnIds } })
+                    .sort('-lastUpdated')
+                    .exec(function(err, yarns) {
+                        if (err) {
+                            res.send({err: err, msg: 'yarns could not be found'});
+                        } else {
+                            res.send(yarns);
+                        }
+                    });
+        }
     });
 
 };
