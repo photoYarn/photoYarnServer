@@ -60,9 +60,8 @@ exports.getUserInfo = function
 exports.getAllYarns = function(req, callback) {
 
     User.findOne({ id: req.body.id }, function(err, user) {
-        var userYarns = user.yarnIds;
 
-        return Yarn.find({ _id: { $in: userYarns } })
+        return Yarn.find({ _id: { $in: user.yarnIds } })
             // return most recently edited yarns first
             .sort('-lastUpdated')
             .exec(function(err, yarns) {
