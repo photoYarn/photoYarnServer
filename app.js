@@ -65,7 +65,7 @@ app.post('/users', function(req, res) {
 // load up a view of all the yarns
 
 // TODO: put id param back in route later
-app.get('/getAllYarns/', function(req, res) {
+app.get('/getAllYarns/:id', function(req, res) {
 
     api.getAllYarns(req, res);
     
