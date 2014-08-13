@@ -2,8 +2,34 @@ var Yarn = require('./models/yarn.js');
 var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 var request = require('request');
-var jwt = require('jwt-simple');
-var secret = process.env.secret || 'paul';
+
+var createUser = function(req, res) {
+    new User({
+        name: req.body.name,
+        id: req.body.id,
+        yarnIds: []
+    }).save(function(err, user, numAffected) {
+        if (err) {
+            res.send({err: err, msg: 'error in creating new user'});
+        } else {
+            // make request to fb to get list of user's friends
+            var fbFriendsUrl = "https://graph.facebook.com/me/friends?access_token=" + req.body.token;
+
+            request({
+                method: "GET",
+                uri: fbFriendsUrl
+            }, function(error, response, body) {
+                if (error) {
+                    res.send({err: error, msg: 'err in accessing users friends'})
+                } else {
+                    var friendInfo = JSON.parse(body).data;
+                    console.log(friendInfo)
+                    exports.addFriends(res, user, friendInfo);
+                }
+            });
+        }
+    });
+};
 
 exports.loginUser = function(req, res) {
     User.findOne({ id: req.body.id }, function(err, user) {
@@ -19,42 +45,15 @@ exports.loginUser = function(req, res) {
     });
 };
 
-var createUser = function(req, res) {
-
-    console.log('access token', req.body.token)
-    var fbFriendsUrl = "https://graph.facebook.com/me/friends?access_token=" + req.body.token;
-
-    // asking fb for user's friends
-    request({
-        method: "GET",
-        uri: fbFriendsUrl
-    }, function(error, response, body) {
-        if (error) {
-            res.send({err: error, msg: 'err in accessing users friends'});
+exports.addFriends = function(res, user, friends) {
+    for (var i = 0; i < friends.length; i++) {
+        user.friends.push(friends[i]);
+    }
+    user.save(function(err, user, numAffected) {
+        if (err) {
+            res.send({err: err, msg: 'error in adding friends'})
         } else {
-            // successfully found friends
-            var friendInfo = JSON.parse(body).data;
-            console.log('friend info', friendInfo);
-            var friendIds = [];
-            for (var i = 0; i < friendInfo.length; i++) {
-                friendIds.push(friendInfo[i].id);
-            }
-
-            // add friends as you create new user
-            new User({
-                name: req.body.name,
-                id: req.body.id,
-                yarnIds: [],
-                friendIds: friendIds
-            }).save(function(err, user, numAffected) {
-                if (err) {
-                    res.send({err: err, msg: 'error in creating new user'});
-                } else {
-                    var serverToken = jwt.encode(req.body.id, secret);
-                    console.log(serverToken);
-                    res.status(200).send({user: user, msg: 'new user successfully created', serverToken: serverToken});
-                }
-            });
+            res.status(200).send({user: user, msg: 'new user successfully created with friends'});
         }
     });
 };
