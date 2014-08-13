@@ -50,8 +50,13 @@ app.post('/users', function(req, res) {
 // TODO: put id param back in route later
 app.get('/getAllYarns/:id', function(req, res) {
 
-    api.getAllYarns(req, res);
+    // api.getAllYarns(req, res);
+    api.getPopularYarns(req, res);
     
+});
+
+app.get('/getPopularYarns', function(req, res) {
+    api.getPopularYarns(req, res);
 });
 
 // route for working on browser

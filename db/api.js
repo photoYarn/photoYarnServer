@@ -3,6 +3,20 @@ var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 var request = require('request');
 
+
+exports.getPopularYarns = function(req, res) {
+    Yarn.find({})
+        .limit(10)
+        .sort('links.length')
+        .exec(function(err, yarns) {
+            if (err) {
+                res.send({err: err, msg: 'error in finding popular yarns'});
+            } else {
+                res.status(200).send({yarns: yarns, msg: 'popular yarns successfully found'});
+            }
+        });
+};
+
 var createUser = function(req, res) {
     new User({
         name: req.body.name,
