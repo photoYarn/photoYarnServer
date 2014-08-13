@@ -31,6 +31,7 @@ var createUser = function(req, res) {
     });
 };
 
+
 exports.loginUser = function(req, res) {
     User.findOne({ id: req.body.id }, function(err, user) {
         if (err) {
@@ -47,7 +48,7 @@ exports.loginUser = function(req, res) {
 
 exports.addFriends = function(res, user, friends) {
     for (var i = 0; i < friends.length; i++) {
-        user.friends.push(friends[i]);
+        user.friendIds.push(friends[i].id);
     }
     user.save(function(err, user, numAffected) {
         if (err) {
@@ -182,8 +183,8 @@ exports.getAllYarns = function(req, res) {
 var getYarnIds = function(user, friends) {
     var yarnIdsObj = {};
     for (var i = 0; i < friends.length; i++) {
-        for (var j = 0; j < friends[i].yarnIds.length; j++) {
-            var friendYarnId = friends[i].yarnIds[j];
+        for (var j = 0; j < friend[i].yarnIds.length; j++) {
+            var friendYarnId = friend[i].yarnIds[j];
             yarnIdsObj[friendYarnId] = true;
         }
     }
