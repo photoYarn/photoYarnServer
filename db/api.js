@@ -158,7 +158,7 @@ exports.getAllYarns = function(req, res) {
                                 if (err) {
                                     res.send({err: err, msg: 'yarns could not be found'});
                                 } else {
-                                    res.send(yarns);
+                                    res.send({yarns: yarns, msg: 'yarns successfully found'});
                                 }
                             });
                 }
