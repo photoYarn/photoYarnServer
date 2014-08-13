@@ -5,8 +5,7 @@ var userSchema = new Schema({
     name: String,
     id: Number,
     yarnIds: [String],
-    friendIds: [Number]
-    
+    friends: [{type: String}]
 });
 
 module.exports = mongoose.model('User', userSchema);
