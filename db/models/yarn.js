@@ -6,6 +6,8 @@ var yarnSchema = new Schema({
     creatorId: Number,
     links: [String],
     lastUpdated: Date,
+    createdAt: Date,
+    size: Number
 });
 
 module.exports = mongoose.model('Yarn', yarnSchema);

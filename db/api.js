@@ -69,7 +69,9 @@ exports.createYarn = function(req, res) {
         caption: req.body.caption,
         creatorId: req.body.creatorId,
         links: [req.body.link],
-        lastUpdated: Date.now()
+        lastUpdated: Date.now(),
+        createdAt: Date.now(),
+        size: 1
     }).save(function(err, yarn, numAffected) {
         if (err) {
             res.send({err: err, msg: 'error in creating new yarn'});
@@ -101,6 +103,7 @@ exports.addPhoto = function(req, res) {
         } else {
             yarn.links.push(req.body.link);
             yarn.lastUpdated = Date.now();
+            yarn.size = yarn.size + 1;
             yarn.save(function(err, yarn, num) {
                 User.findOne({ id: req.body.creatorId }, function(err, user) {
                     if (err) {
@@ -125,11 +128,24 @@ exports.addPhoto = function(req, res) {
 
 exports.getPopularYarns = function(req, res) {
     Yarn.find({})
-        .limit(1)
-        .sort('links.length')
+        .limit(10)
+        .sort('size')
         .exec(function(err, yarns) {
             if (err) {
                 res.send({err: err, msg: 'error in finding popular yarns'});
+            } else {
+                res.status(200).send(yarns);
+            }
+        });
+};
+
+exports.getNewYarns = function(req, res) {
+    Yarn.find({})
+        .limit(10)
+        .sort('-createdAt')
+        .exec(function(err, yarns) {
+            if (err) {
+                res.send({err: err, msg: 'error in finding new yarns'})
             } else {
                 res.status(200).send(yarns);
             }
