@@ -40,24 +40,7 @@ app.get('/', function(req, res) {
 });
 
 app.post('/users', function(req, res) {
-    console.log('post to users', req.body)
-    api.findUser(req, function(err, user) {
-        if (err) {
-            res.send({err: err, msg: 'error in finding user'});
-        } else if (user) {
-            // probably have to query db to find and
-            // send all relevant user data at this point
-            res.status(200).send({user: user, msg: 'user already exists'});
-        } else {
-            api.createUser(req, function(err, user, numAffected) {
-                if (err) {
-                    res.send({err: err, msg: 'error in creating new user'});
-                } else {
-                    res.status(200).send({user: user, msg: 'new user successfully created'});
-                }
-            });
-        }
-    });
+    api.loginUser(req, res);
 });
 
 
@@ -66,8 +49,21 @@ app.post('/users', function(req, res) {
 
 // TODO: put id param back in route later
 app.get('/getAllYarns/:id', function(req, res) {
+    api.getAllYarns(req, res);    
+});
 
-    api.getAllYarns(req, res);
+app.get('/getPopularYarns', function(req, res) {
+    api.getPopularYarns(req, res);
+});
+
+app.get('/getNewYarns', function(req, res) {
+    api.getNewYarns(req, res);
+});
+
+// route for working on browser
+app.get('/getYarnsBrowser/', function(req, res) {
+
+    api.getYarnsBrowser(req, res);
     
 });
 
@@ -81,14 +77,6 @@ app.post('/createNewYarn', function(req, res) {
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
 app.post('/addToYarn', function(req, res) {
-
-    // api.addPhoto(req, function(err, yarn, num) {
-    //     if (err) {
-    //         res.send(err);
-    //     } else {
-    //         res.status(200).send(yarn);
-    //     }
-    // });
 
     api.addPhoto(req, res);
     
