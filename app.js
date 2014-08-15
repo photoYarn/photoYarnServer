@@ -6,7 +6,9 @@ var api = require('./db/api.js');
 // use bodyParser.urlencoded() or
 // use bodyParser.json() as needed
 var bodyParser = require('body-parser');
-var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
+var mongoLabUrl = 'mongodb://MongoLab-p:aP.BgqFn0wl7sVm9G_x13J0VIspnT1CMtIkrN5cOZ74-@ds050087.mongolab.com:50087/MongoLab-p';
+// var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
+// var mongoLabUrl = 'mongodb://localhost/photoYarn';
 
 var app = express();
 
