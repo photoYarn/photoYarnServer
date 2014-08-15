@@ -3,9 +3,7 @@ var User = require('./models/user.js');
 var Photo = require('./models/photo.js');
 var request = require('request');
 var jwt = require('jwt-simple');
-var secret = process.env.secret || 'kia';
-
-
+var secret = process.env.secret || 'paul';
 
 exports.loginUser = function(req, res) {
     User.findOne({ id: req.body.id }, function(err, user) {
