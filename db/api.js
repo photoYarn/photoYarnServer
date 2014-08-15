@@ -51,6 +51,7 @@ var createUser = function(req, res) {
                     res.send({err: err, msg: 'error in creating new user'});
                 } else {
                     var token = jwt.encode(req.body.id, secret);
+                    console.log(token);
                     res.status(200).send({user: user, msg: 'new user successfully created', token: token});
                 }
             });

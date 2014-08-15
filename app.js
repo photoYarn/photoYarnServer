@@ -40,7 +40,7 @@ app.get('/', function(req, res) {
     res.sendfile(__dirname + '/public/index.html');
 });
 
-app.post('/users', isAuthorized, function(req, res) {
+app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
@@ -62,7 +62,7 @@ app.get('/getNewYarns', isAuthorized, function(req, res) {
 });
 
 // route for working on browser
-app.get('/getYarnsBrowser/', function(req, res) {
+app.get('/getYarnsBrowser', function(req, res) {
 
     api.getYarnsBrowser(req, res);
     
