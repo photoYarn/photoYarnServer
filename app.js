@@ -77,7 +77,7 @@ app.post('/createNewYarn', isAuthorized, function(req, res) {
 
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
-app.post('/addToYarn', function(req, res) {
+app.post('/addToYarn', isAuthorized, function(req, res) {
 
     api.addPhoto(req, res);
     

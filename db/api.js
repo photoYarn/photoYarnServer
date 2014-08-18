@@ -91,7 +91,6 @@ exports.createYarn = function(req, res) {
 
 };
 
-
 exports.addPhoto = function(req, res) {
 
     Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
