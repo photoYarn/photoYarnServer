@@ -209,6 +209,22 @@ exports.getYarnsBrowser = function(req, res) {
             });
 }
 
+exports.getEightYarns = function(req, res) {
+    var yarnsLoaded = parseInt(req.query.yarnsLoaded);
+
+    return Yarn.find({})
+            .sort('-lastUpdated')
+            .skip(yarnsLoaded)
+            .limit(8)
+            .exec(function(err, yarns) {
+                if (err) {
+                    res.send({err: err, msg: 'getEightYarns error'});
+                } else {
+                    res.send(yarns);
+                }
+            });
+};
+
 exports.removeAllPhotos = function() {
     Photo.remove({}, function(err) {
         console.log(err);
@@ -220,4 +236,3 @@ exports.removeAllYarns = function() {
         console.log(err);
     });
 };
-
