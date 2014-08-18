@@ -65,7 +65,7 @@ app.get('/getNewYarns', isAuthorized, function(req, res) {
 app.get('/getYarnsBrowser', function(req, res) {
 
     api.getYarnsBrowser(req, res);
-    
+
 });
 
 // called when creating a new yarn
