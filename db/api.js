@@ -33,7 +33,6 @@ var createUser = function(req, res) {
     });
 };
 
-
 exports.loginUser = function(req, res) {
     User.findOne({ id: req.body.id }, function(err, user) {
         if (err) {
@@ -62,6 +61,7 @@ exports.addFriends = function(res, user, friends) {
 };
 
 exports.createYarn = function(req, res) {
+    console.log('createYarn req body', req.body);
 
     new Yarn({
         caption: req.body.caption,
@@ -78,7 +78,6 @@ exports.createYarn = function(req, res) {
                 if (err) {
                     res.send({err: err, msg: 'error in finding user'});
                 } else {
-                    user.yarnIds.push(yarn._id);
                     user.save(function(err, user, num) {
                         if (err) {
                             res.send({err: err, msg: 'error in updating user'});
@@ -210,6 +209,22 @@ exports.getYarnsBrowser = function(req, res) {
                 }
             });
 }
+
+exports.getEightYarns = function(req, res) {
+    var yarnsLoaded = parseInt(req.query.yarnsLoaded);
+
+    return Yarn.find({})
+            .sort('-lastUpdated')
+            .skip(yarnsLoaded)
+            .limit(8)
+            .exec(function(err, yarns) {
+                if (err) {
+                    res.send({err: err, msg: 'getEightYarns error'});
+                } else {
+                    res.send(yarns);
+                }
+            });
+};
 
 exports.removeAllPhotos = function() {
     Photo.remove({}, function(err) {

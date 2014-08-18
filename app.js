@@ -6,9 +6,7 @@ var api = require('./db/api.js');
 // use bodyParser.urlencoded() or
 // use bodyParser.json() as needed
 var bodyParser = require('body-parser');
-var mongoLabUrl = 'mongodb://MongoLab-p:aP.BgqFn0wl7sVm9G_x13J0VIspnT1CMtIkrN5cOZ74-@ds050087.mongolab.com:50087/MongoLab-p';
-// var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
-// var mongoLabUrl = 'mongodb://localhost/photoYarn';
+var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
 
 var app = express();
 
@@ -56,23 +54,18 @@ app.get('/getPopularYarns', isAuthorized, function(req, res) {
     api.getPopularYarns(req, res);
 });
 
-// gets newest yarns globally
-app.get('/getNewYarns', isAuthorized, function(req, res) {
-    api.getNewYarns(req, res);
+// TODO: put id param back in route later
+app.get('/getAllYarns/:id', function(req, res) {
+    console.log('server heard getAllYarns');
+    api.getAllYarns(req, res);
+
 });
 
 // route for working on browser
 app.get('/getYarnsBrowser', function(req, res) {
-
-    api.getYarnsBrowser(req, res);
-    
-});
-
-// route for working on browser
-app.get('/getYarnsBrowser/', function(req, res) {
-
-    api.getYarnsBrowser(req, res);
-    
+    console.log('server heard getYarnsBrowser');
+    // api.getYarnsBrowser(req, res);
+    api.getEightYarns(req, res);
 });
 
 // called when creating a new yarn
