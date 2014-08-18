@@ -1,6 +1,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var api = require('./db/api.js');
+var isAuthorized = require('./lib/auth.js');
 
 // bodyParser on its own has been deprecated
 // use bodyParser.urlencoded() or
@@ -43,6 +44,7 @@ app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
+
 // client will call as soon as app loads to
 // load up a view of all the yarns
 app.get('/getAllYarns/:id', isAuthorized, function(req, res) {
@@ -54,18 +56,16 @@ app.get('/getPopularYarns', isAuthorized, function(req, res) {
     api.getPopularYarns(req, res);
 });
 
-// TODO: put id param back in route later
-app.get('/getAllYarns/:id', function(req, res) {
-    console.log('server heard getAllYarns');
-    api.getAllYarns(req, res);
-
+// gets newest yarns globally
+app.get('/getNewYarns', isAuthorized, function(req, res) {
+    api.getNewYarns(req, res);
 });
 
 // route for working on browser
 app.get('/getYarnsBrowser', function(req, res) {
-    console.log('server heard getYarnsBrowser');
-    // api.getYarnsBrowser(req, res);
-    api.getEightYarns(req, res);
+
+    api.getYarnsBrowser(req, res);
+
 });
 
 // called when creating a new yarn
