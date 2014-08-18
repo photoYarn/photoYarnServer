@@ -44,6 +44,9 @@ app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
+// app.del('/users', function(req, res) {
+//     api.deleteUser(req, res);
+// });
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
