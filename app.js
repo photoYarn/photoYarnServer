@@ -67,7 +67,8 @@ app.get('/getNewYarns', isAuthorized, function(req, res) {
 // route for working on browser
 app.get('/getYarnsBrowser', function(req, res) {
 
-    api.getYarnsBrowser(req, res);
+    // api.getYarnsBrowser(req, res);
+    // api.getYarns(req, res);
 
 });
 
