@@ -156,6 +156,7 @@ exports.getNewYarns = function(req, res) {
 exports.getYarns = function(req, res) {
     console.log('req.query', req.query)
     var yarnsLoaded = parseInt(req.query.yarnsLoaded);
+    var numYarns = parseInt(req.query.numYarns);
 
     User.findOne({ id: req.params.id }, function(err, user) {
 
@@ -175,7 +176,7 @@ exports.getYarns = function(req, res) {
                     return Yarn.find({ _id: { $in: yarnIds } })
                             .sort('-lastUpdated')
                             .skip(yarnsLoaded)
-                            .limit(parseInt(req.query.numYarns)),
+                            .limit(numYarns)
                             .exec(function(err, yarns) {
                                 if (err) {
                                     res.send({err: err, msg: 'yarns could not be found'});
