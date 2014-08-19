@@ -153,21 +153,6 @@ exports.getNewYarns = function(req, res) {
         });
 };
 
-// exports.getEightYarns = function(req, res) {
-//     var yarnsLoaded = parseInt(req.query.yarnsLoaded);
-
-//     return Yarn.find({})
-//             .sort('-lastUpdated')
-//             .skip(yarnsLoaded)
-//             .limit(8)
-//             .exec(function(err, yarns) {
-//                 if (err) {
-//                     res.send({err: err, msg: 'getEightYarns error'});
-//                 } else {
-//                     res.send(yarns);
-//                 }
-//             });
-// };
 exports.getYarns = function(req, res) {
 
     var yarnsLoaded = parseInt(req.query.yarnsLoaded);
