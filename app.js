@@ -44,11 +44,14 @@ app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
+// app.del('/users', function(req, res) {
+//     api.deleteUser(req, res);
+// });
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
 app.get('/getAllYarns/:id', isAuthorized, function(req, res) {
-    api.getAllYarns(req, res);    
+    api.getYarns(req, res);  
 });
 
 // gets most popular yarns globally
@@ -64,7 +67,8 @@ app.get('/getNewYarns', isAuthorized, function(req, res) {
 // route for working on browser
 app.get('/getYarnsBrowser', function(req, res) {
 
-    api.getYarnsBrowser(req, res);
+    // api.getYarnsBrowser(req, res);
+    // api.getYarns(req, res);
 
 });
 

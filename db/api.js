@@ -6,20 +6,21 @@ var jwt = require('jwt-simple');
 var secret = process.env.secret || 'paul';
 
 exports.loginUser = function(req, res) {
+    var serverToken = jwt.encode(req.body.id, secret);
     User.findOne({ id: req.body.id }, function(err, user) {
         if (err) {
             res.send({err: err, msg: 'error in finding user'});
         } else if (user) {
             // probably have to query db to find and
             // send all relevant user data at this point
-            res.status(200).send({user: user, msg: 'user already exists'});
+            res.status(200).send({user: user, msg: 'user already exists', serverToken: serverToken});
         } else {
-            createUser(req, res);
+            createUser(req, res, serverToken);
         }
     });
 };
 
-var createUser = function(req, res) {
+var createUser = function(req, res, serverToken) {
 
     console.log('access token', req.body.token)
     var fbFriendsUrl = "https://graph.facebook.com/me/friends?access_token=" + req.body.token;
@@ -50,7 +51,6 @@ var createUser = function(req, res) {
                 if (err) {
                     res.send({err: err, msg: 'error in creating new user'});
                 } else {
-                    var serverToken = jwt.encode(req.body.id, secret);
                     console.log(serverToken);
                     res.status(200).send({user: user, msg: 'new user successfully created', serverToken: serverToken});
                 }
@@ -58,6 +58,11 @@ var createUser = function(req, res) {
         }
     });
 };
+
+// exports.deleteUsr = function(req, res) {
+//     User.findOneAndRemove({ id: req.body.id })
+//         .remove()
+// }
 
 exports.createYarn = function(req, res) {
 
@@ -148,7 +153,10 @@ exports.getNewYarns = function(req, res) {
         });
 };
 
-exports.getAllYarns = function(req, res) {
+exports.getYarns = function(req, res) {
+    var yarnsLoaded = parseInt(req.query.yarnsLoaded);
+    var numYarns = parseInt(req.query.numYarns);
+    console.log('numYarns', numYarns);
     User.findOne({ id: req.params.id }, function(err, user) {
 
         if (err) {
@@ -166,6 +174,8 @@ exports.getAllYarns = function(req, res) {
 
                     return Yarn.find({ _id: { $in: yarnIds } })
                             .sort('-lastUpdated')
+                            .skip(yarnsLoaded)
+                            .limit(numYarns)
                             .exec(function(err, yarns) {
                                 if (err) {
                                     res.send({err: err, msg: 'yarns could not be found'});
@@ -209,21 +219,6 @@ exports.getYarnsBrowser = function(req, res) {
             });
 }
 
-exports.getEightYarns = function(req, res) {
-    var yarnsLoaded = parseInt(req.query.yarnsLoaded);
-
-    return Yarn.find({})
-            .sort('-lastUpdated')
-            .skip(yarnsLoaded)
-            .limit(8)
-            .exec(function(err, yarns) {
-                if (err) {
-                    res.send({err: err, msg: 'getEightYarns error'});
-                } else {
-                    res.send(yarns);
-                }
-            });
-};
 
 exports.removeAllPhotos = function() {
     Photo.remove({}, function(err) {
