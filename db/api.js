@@ -175,7 +175,7 @@ exports.getYarns = function(req, res) {
                     return Yarn.find({ _id: { $in: yarnIds } })
                             .sort('-lastUpdated')
                             .skip(yarnsLoaded)
-                            .limit(req.query.numYarns)
+                            .limit(parseInt(req.query.numYarns)),
                             .exec(function(err, yarns) {
                                 if (err) {
                                     res.send({err: err, msg: 'yarns could not be found'});
