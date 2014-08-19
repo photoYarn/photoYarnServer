@@ -51,7 +51,7 @@ app.post('/users', function(req, res) {
 // client will call as soon as app loads to
 // load up a view of all the yarns
 app.get('/getAllYarns/:id', isAuthorized, function(req, res) {
-    api.getAllYarns(req, res);    
+    api.getYarns(req, res);  
 });
 
 // gets most popular yarns globally
