@@ -154,10 +154,9 @@ exports.getNewYarns = function(req, res) {
 };
 
 exports.getYarns = function(req, res) {
-    console.log('req.query', req.query)
     var yarnsLoaded = parseInt(req.query.yarnsLoaded);
     var numYarns = parseInt(req.query.numYarns);
-
+    console.log('numYarns', numYarns);
     User.findOne({ id: req.params.id }, function(err, user) {
 
         if (err) {
