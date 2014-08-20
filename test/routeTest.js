@@ -4,17 +4,17 @@ var request = require('supertest');
 var app = require('../app.js');
 var expect = require('chai').expect;
 
-xdescribe('Server Routes', function() {
+describe('Server Routes', function() {
     // TODO uncomment test once root GET route no longer used for server debugging
-    // GET /
-    xit('should reject root GET route', function(done) {
+    // // GET /
+    it('should reject GET to /', function(done) {
         request(app)
             .get('/')
             .expect(404, done);
     });
 
     // POST /
-    it('should reject root POST route', function(done) {
+    it('should reject POST to /', function(done) {
         request(app)
             .post('/')
             .expect(404, done);

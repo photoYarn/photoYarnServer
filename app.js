@@ -1,7 +1,8 @@
 var express = require('express');
 var mongoose = require('mongoose');
 var api = require('./db/api.js');
-var isAuthorized = require('./lib/auth.js');
+var isAuthorized = require('./lib/auth.js').isAuthorized;
+var hasId = require('./lib/auth.js').hasId;
 
 // bodyParser on its own has been deprecated
 // use bodyParser.urlencoded() or
@@ -36,9 +37,9 @@ app.all('*', function(req, res, next) {
     next();
 });
 
-app.get('/', function(req, res) {
-    res.sendfile(__dirname + '/public/index.html');
-});
+// app.get('/', function(req, res) {
+//     res.sendfile(__dirname + '/public/index.html');
+// });
 
 app.post('/users', function(req, res) {
     api.loginUser(req, res);
@@ -50,7 +51,7 @@ app.post('/users', function(req, res) {
 
 // client will call as soon as app loads to
 // load up a view of all the yarns
-app.get('/getAllYarns/:id', isAuthorized, function(req, res) {
+app.get('/getAllYarns', hasId, isAuthorized, function(req, res) {
     api.getYarns(req, res);  
 });
 
@@ -66,15 +67,11 @@ app.get('/getNewYarns', isAuthorized, function(req, res) {
 
 // route for working on browser
 app.get('/getYarnsBrowser', function(req, res) {
-
     api.getYarnsBrowser(req, res);
-    // api.getYarns(req, res);
-
 });
 
 // called when creating a new yarn
 app.post('/createNewYarn', isAuthorized, function(req, res) {
-
     api.createYarn(req, res);
 
 });
@@ -82,9 +79,7 @@ app.post('/createNewYarn', isAuthorized, function(req, res) {
 // client will call this, providing a yarn id
 // in order to add a photo to a specific yarn
 app.post('/addToYarn', isAuthorized, function(req, res) {
-
     api.addPhoto(req, res);
-    
 });
 
 app.get('*', function(req, res) {

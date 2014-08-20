@@ -9,7 +9,7 @@ exports.loginUser = function(req, res) {
     var serverToken = jwt.encode(req.body.id, secret);
     User.findOne({ id: req.body.id }, function(err, user) {
         if (err) {
-            res.send({err: err, msg: 'error in finding user'});
+            res.status(404).send({err: err, msg: 'error in finding user'});
         } else if (user) {
             // probably have to query db to find and
             // send all relevant user data at this point
@@ -31,7 +31,7 @@ var createUser = function(req, res, serverToken) {
         uri: fbFriendsUrl
     }, function(error, response, body) {
         if (error) {
-            res.send({err: error, msg: 'err in accessing users friends'});
+            res.status(404).send({err: error, msg: 'err in accessing users friends'});
         } else {
             // successfully found friends
             var friendInfo = JSON.parse(body).data;
@@ -49,7 +49,7 @@ var createUser = function(req, res, serverToken) {
                 friendIds: friendIds
             }).save(function(err, user, numAffected) {
                 if (err) {
-                    res.send({err: err, msg: 'error in creating new user'});
+                    res.status(404).send({err: err, msg: 'error in creating new user'});
                 } else {
                     console.log(serverToken);
                     res.status(200).send({user: user, msg: 'new user successfully created', serverToken: serverToken});
@@ -75,16 +75,16 @@ exports.createYarn = function(req, res) {
         size: 1
     }).save(function(err, yarn, numAffected) {
         if (err) {
-            res.send({err: err, msg: 'error in creating new yarn'});
+            res.status(404).send({err: err, msg: 'error in creating new yarn'});
         } else {
             User.findOne({ id: req.body.creatorId }, function(err, user) {
                 if (err) {
-                    res.send({err: err, msg: 'error in finding user'});
+                    res.status(404).send({err: err, msg: 'error in finding user'});
                 } else {
                     user.yarnIds.push(yarn._id);
                     user.save(function(err, user, num) {
                         if (err) {
-                            res.send({err: err, msg: 'error in updating user'});
+                            res.status(404).send({err: err, msg: 'error in updating user'});
                         } else {
                             res.status(200).send({user: user, msg: 'yarn successfully created, user updated'})
                         }
@@ -97,34 +97,37 @@ exports.createYarn = function(req, res) {
 };
 
 exports.addPhoto = function(req, res) {
-
-    Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
-        if (err) {
-            res.send({err: err, msg: 'error in finding yarn'});
-        } else {
-            yarn.links.push(req.body.link);
-            yarn.lastUpdated = Date.now();
-            yarn.size = yarn.size + 1;
-            yarn.save(function(err, yarn, num) {
-                User.findOne({ id: req.body.creatorId }, function(err, user) {
-                    if (err) {
-                        res.send({err: err, msg: 'error in finding yarn'});
-                    } else {
-                        if (user.yarnIds.indexOf(yarn._id) === -1) {
-                            user.yarnIds.push(yarn._id);
-                        }
-                        user.save(function(err, user, num) {
-                            if (err) {
-                                res.send({err: err, msg: 'error in updating user'});
-                            } else {
-                                res.status(200).send('photo successfully added and user updated')
+    if (req.body.yarnId) {
+        Yarn.findOne({_id: req.body.yarnId}, function(err, yarn) {
+            if (err) {
+                res.status(404).send({err: err, msg: 'error in finding yarn'});
+            } else {
+                yarn.links.push(req.body.link);
+                yarn.lastUpdated = Date.now();
+                yarn.size = yarn.size + 1;
+                yarn.save(function(err, yarn, num) {
+                    User.findOne({ id: req.body.creatorId }, function(err, user) {
+                        if (err) {
+                            res.status(404).send({err: err, msg: 'error in finding yarn'});
+                        } else {
+                            if (user.yarnIds.indexOf(yarn._id) === -1) {
+                                user.yarnIds.push(yarn._id);
                             }
-                        });
-                    }
+                            user.save(function(err, user, num) {
+                                if (err) {
+                                    res.status(404).send({err: err, msg: 'error in updating user'});
+                                } else {
+                                    res.status(200).send('photo successfully added and user updated')
+                                }
+                            });
+                        }
+                    });
                 });
-            });
-        }
-    });
+            }
+        });
+    } else {
+        res.status(404).send('yarnId not found');
+    }
 };
 
 exports.getPopularYarns = function(req, res) {
@@ -133,7 +136,7 @@ exports.getPopularYarns = function(req, res) {
         .sort('size')
         .exec(function(err, yarns) {
             if (err) {
-                res.send({err: err, msg: 'error in finding popular yarns'});
+                res.status(404).send({err: err, msg: 'error in finding popular yarns'});
             } else {
                 res.status(200).send(yarns);
             }
@@ -146,7 +149,7 @@ exports.getNewYarns = function(req, res) {
         .sort('-createdAt')
         .exec(function(err, yarns) {
             if (err) {
-                res.send({err: err, msg: 'error in finding new yarns'})
+                res.status(404).send({err: err, msg: 'error in finding new yarns'})
             } else {
                 res.status(200).send(yarns);
             }
@@ -157,17 +160,17 @@ exports.getYarns = function(req, res) {
     var yarnsLoaded = parseInt(req.query.yarnsLoaded);
     var numYarns = parseInt(req.query.numYarns);
     console.log('numYarns', numYarns);
-    User.findOne({ id: req.params.id }, function(err, user) {
+    User.findOne({ id: parseInt(req.query.id) }, function(err, user) {
 
         if (err) {
-            res.send({err: err, msg: 'user not found'});
+            res.status(404).send({err: err, msg: 'user not found'});
         } else {
 
             console.log(user)
             // find all friends' yarn ids
             User.find({ id: { $in: user.friendIds } }, function(err, friends) {
                 if (err) {
-                    res.send({err: err, msg: 'error in finding friends'});
+                    res.status(404).send({err: err, msg: 'error in finding friends'});
                 } else {
                     
                     var yarnIds = getYarnIds(user, friends);
@@ -178,9 +181,9 @@ exports.getYarns = function(req, res) {
                             .limit(numYarns)
                             .exec(function(err, yarns) {
                                 if (err) {
-                                    res.send({err: err, msg: 'yarns could not be found'});
+                                    res.status(404).send({err: err, msg: 'yarns could not be found'});
                                 } else {
-                                    res.send(yarns);
+                                    res.status(200).send(yarns);
                                 }
                             });
                 }
@@ -212,7 +215,7 @@ exports.getYarnsBrowser = function(req, res) {
             .sort('-lastUpdated')
             .exec(function(err, yarns) {
                 if (err) {
-                    res.send({err: err, msg: 'yarns could not be found'});
+                    res.status(404).send({err: err, msg: 'yarns could not be found'});
                 } else {
                     res.send(yarns);
                 }
