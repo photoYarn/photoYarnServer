@@ -1,57 +1,57 @@
 var request = require('supertest');
-var app = require('../app.js');
+var app = require('../../app.js');
 var expect = require('chai').expect;
 
 var testUtils = exports;
 
-testUtils.populateThreads = function(options, done) {
-    options.numThreads = options.numThreads || 1;
-    options.caption = options.caption || 'Proto Thread';
+testUtils.populateYarns = function(options, done) {
+    options.numYarns = options.numYarns || 1;
+    options.caption = options.caption || 'Proto Yarn';
     options.creatorId = options.creatorId || '9000000';
     options.link = options.link || 'http://www.proto.com/99000000';
     options.verify = options.verify || false;
 
     // create source data
-    var threadData = [];
-    for (var i = 0; i < options.numThreads; i++) {
-        // create test thread
-        var newThread = {};
-        newThread.caption = options.caption + ' ' + i;
-        newThread.creatorId = options.creatorId + i;
-        newThread.link = options.link.replace(/(\d+)$/, function(id) { return id + i; });
-        threadData.push(newThread);
+    var yarnData = [];
+    for (var i = 0; i < options.numYarns; i++) {
+        // create test yarn
+        var newYarn = {};
+        newYarn.caption = options.caption + ' ' + i;
+        newYarn.creatorId = options.creatorId + i;
+        newYarn.link = options.link.replace(/(\d+)$/, function(id) { return id + i; });
+        yarnData.push(newYarn);
     }
 
     // populate database using http requests
     var asyncCounter = 0;
-    for (var i = 0; i < threadData.length; i++) {
+    for (var i = 0; i < yarnData.length; i++) {
         request(app)
             .post('/createNewYarn')
             .expect(200)
             .type('form')
-            .send(threadData[i])
+            .send(yarnData[i])
             .accept('application/json')
             .end(function(i) {
                 return function(err, res) {
                     if (err) { console.log(err) }
                     expect(err).to.equal(null);
-                    threadData[i]._id = res.body._id;
+                    yarnData[i]._id = res.body._id;
 
                     // verify return data
                     if (options.verify) {
                         var resData = res.body;
-                        for (var key in threadData[i]) {
+                        for (var key in yarnData[i]) {
                             if (key === 'link') {
-                                expect(resData.links.indexOf(threadData[i][key])).to.not.equal(-1);
+                                expect(resData.links.indexOf(yarnData[i][key])).to.not.equal(-1);
                             } else {
-                                expect(resData[key].toString()).to.equal(threadData[i][key]);
+                                expect(resData[key].toString()).to.equal(yarnData[i][key]);
                             }
                         }
                     }
 
                     // flag as done after completion of all requests
                     asyncCounter++;
-                    if (asyncCounter === options.numThreads) {
+                    if (asyncCounter === options.numYarns) {
                         done();
                     }
                 };
@@ -59,5 +59,5 @@ testUtils.populateThreads = function(options, done) {
     }
 
     // return source data
-    return threadData;
+    return yarnData;
 }
