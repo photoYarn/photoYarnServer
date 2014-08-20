@@ -1,8 +1,35 @@
+var expect = require('chai').expect;
+var mongoose = require('mongoose');
+var User = require('../../db/models/user.js');
+
+// TODO remove after populateYarns refactored to insert directly into Mongo
 var request = require('supertest');
 var app = require('../../app.js');
-var expect = require('chai').expect;
 
-var testUtils = exports;
+var testUtils = {};
+
+testUtils.populateUsers = function(options, done) {
+  options.numUsers = options.numUsers || 1;
+  options.userName = options.userName || 'Test User';
+  options.userId = options.userId || '9000000';
+
+  var userData = [];
+  for (var i = 0; i < options.numUsers; i++) {
+    // create test user values
+    var userData = {};
+    userData.name = options.userName + ' ' + i;
+    userData.id = options.userId + i;
+    userData.yarnIds = [];
+    userData.friendIds = [];
+
+    // save test user
+    var newUser = new User(userData)
+      .save(function(err, user, numAffected) {
+        if (err) console.log(err);
+        expect(err).to.equal(null);
+      });
+  }
+}
 
 testUtils.populateYarns = function(options, done) {
     options.numYarns = options.numYarns || 1;
@@ -61,3 +88,5 @@ testUtils.populateYarns = function(options, done) {
     // return source data
     return yarnData;
 }
+
+module.exports = testUtils;
