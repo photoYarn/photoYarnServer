@@ -28,7 +28,7 @@ testUtils.populateUsers = function(options, done) {
         if (err) console.log(err);
         expect(err).to.equal(null);
       });
-  }
+    }
 }
 
 testUtils.populateYarns = function(options, done) {

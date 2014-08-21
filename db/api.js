@@ -5,6 +5,16 @@ var request = require('request');
 var jwt = require('jwt-simple');
 var secret = process.env.secret || 'paul';
 
+exports.userInfo = function(req, res) {
+    User.findOne({ id: req.query.id }, function(err, user) {
+        if (err) {
+            res.status(404).send('user not found');
+        } else {
+             res.status(200).send('here is your user');
+        }
+    });
+};
+
 exports.loginUser = function(req, res) {
     var serverToken = jwt.encode(req.body.id, secret);
     User.findOne({ id: req.body.id }, function(err, user) {

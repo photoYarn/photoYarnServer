@@ -45,6 +45,10 @@ app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
+app.get('/userInfo', function(req, res) {
+    api.userInfo(req, res);
+});
+
 // app.del('/users', function(req, res) {
 //     api.deleteUser(req, res);
 // });
