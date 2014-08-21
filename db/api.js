@@ -10,7 +10,7 @@ exports.userInfo = function(req, res) {
         if (err) {
             res.status(404).send('user not found');
         } else {
-             res.status(200).send('here is your user');
+             res.status(200).send({user: user});
         }
     });
 };
