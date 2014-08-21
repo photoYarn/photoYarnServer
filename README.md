@@ -1,4 +1,4 @@
 photoYarnServer
 ===============
 
-The backend of our photoYarn app
+The backend of our photoYarn app.

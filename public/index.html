@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1> why wont this work </h1>
+    <button onclick='login()'> Login </button>
+    <button onclick='logout()'> Logout </button>
+
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <!-- // <script src='jquery.ba-bbq.js'></script> -->
+    <script src='jquery-deparam.js'></script>
+    <script src="oauth.js"></script>
+    <script>
+        oauth.init({appId: 261431800718045});
+        var login = function() {
+            oauth.login(function(response) {
+                if (response.status === 'connected') {
+                    console.log('fb login success, received access token');
+
+                    // check against database to see if new user
+                    // or current user by sending request to
+                    $.ajax({
+                        type: "GET",
+                        url: "https://graph.facebook.com/me?access_token=" + response.token,
+                        success: function(data) {
+                            console.log(data)
+                            var userData = {
+                                id: data.id,
+                                gender: data.gender.charAt(0),
+                                name: data.name,
+                                token: response.token
+                            }
+                            console.log(userData)
+                            // request to /users
+                            $.ajax({
+                                type: 'POST',
+                                url: 'http://localhost:8100/users',
+                                data: userData,
+                                success: function(data) {
+                                    console.log(data);
+                                },
+                                error: function(error) {
+                                    console.log(error)
+                                }
+                            });
+                        }
+                    })
+
+                    // redirect to home page here?
+
+                } else {
+                    console.log('login failed', response);
+                }
+            });
+        };
+        var logout = function() {
+            oauth.logout(function(token) {
+                console.log('you logged out', token)
+            });
+        };
+        var isLoggedIn = function() {
+            return oauth.isLoggedIn();
+        };  
+    </script>
+</body>
+</html>
