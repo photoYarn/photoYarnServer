@@ -8,6 +8,8 @@ var hasId = require('./lib/auth.js').hasId;
 // use bodyParser.urlencoded() or
 // use bodyParser.json() as needed
 var bodyParser = require('body-parser');
+
+// Establishes the mongoLab url for production and development environment
 var mongoLabUrl = process.env.mongoLab || 'mongodb://localhost/photoYarn';
 
 var app = express();
@@ -41,20 +43,16 @@ app.all('*', function(req, res, next) {
 //     res.sendfile(__dirname + '/public/index.html');
 // });
 
+// route to login or create new user
 app.post('/users', function(req, res) {
     api.loginUser(req, res);
 });
 
+// route to send information about a specific user to the client
 app.get('/userInfo', function(req, res) {
     api.userInfo(req, res);
 });
-
-// app.del('/users', function(req, res) {
-//     api.deleteUser(req, res);
-// });
-
-// client will call as soon as app loads to
-// load up a view of all the yarns
+// route to send yarns to client
 app.get('/getAllYarns', hasId, isAuthorized, function(req, res) {
     api.getYarns(req, res);  
 });
@@ -77,7 +75,6 @@ app.get('/getYarnsBrowser', function(req, res) {
 // called when creating a new yarn
 app.post('/createNewYarn', isAuthorized, function(req, res) {
     api.createYarn(req, res);
-
 });
 
 // client will call this, providing a yarn id
