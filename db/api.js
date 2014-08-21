@@ -6,6 +6,7 @@ var jwt = require('jwt-simple');
 var secret = process.env.secret || 'paul';
 
 exports.userInfo = function(req, res) {
+    console.log('req', req)
     User.findOne({ id: req.query.id }, function(err, user) {
         if (err) {
             res.status(404).send('user not found');
